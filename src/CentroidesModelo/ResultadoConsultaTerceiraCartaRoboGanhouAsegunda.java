@@ -1,0 +1,24 @@
+package CentroidesModelo;
+
+import cbr.cbrDescriptions.CentroidesTerceiraCartaRoboGanhouAsegundaDescription;
+
+public class ResultadoConsultaTerceiraCartaRoboGanhouAsegunda {
+CentroidesTerceiraCartaRoboGanhouAsegundaDescription centroideTerceiraCartaRoboGanhouAsegunda;
+Double similaridadeCasoMaisSimilar;
+public CentroidesTerceiraCartaRoboGanhouAsegundaDescription getCentroideTerceiraCartaRoboGanhouAsegunda() {
+	return centroideTerceiraCartaRoboGanhouAsegunda;
+}
+public void setCentroideTerceiraCartaRoboGanhouAsegunda(
+		CentroidesTerceiraCartaRoboGanhouAsegundaDescription centroideTerceiraCartaRoboGanhouAsegunda) {
+	this.centroideTerceiraCartaRoboGanhouAsegunda = centroideTerceiraCartaRoboGanhouAsegunda;
+}
+public Double getSimilaridadeCasoMaisSimilar() {
+	return similaridadeCasoMaisSimilar;
+}
+public void setSimilaridadeCasoMaisSimilar(Double similaridadeCasoMaisSimilar) {
+	this.similaridadeCasoMaisSimilar = similaridadeCasoMaisSimilar;
+}
+
+
+	
+}
