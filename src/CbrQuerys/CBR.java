@@ -721,6 +721,7 @@ public interface CBR {
 
 	default Collection<RetrievalResult>  executeQueryActiveLearning(Collection<CBRCase> cases, CBRQuery query)
 			throws ExecutionException {
+
 		TrucoDescription desc = (TrucoDescription) query.getDescription();
 		NNConfig simConfig = new NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
@@ -898,6 +899,7 @@ public interface CBR {
 		Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(cases, query, simConfig);
 
 		eval = SelectCases.selectTopKRR(eval, cases.size());
+
 		return eval;
 
 	}
@@ -909,12 +911,12 @@ public interface CBR {
 		NNConfig simConfig = new NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
 		PesosConsulta pesos = new PesosConsulta();
-		if (desc.getJogadorMao() != null) {
+		/*if (desc.getJogadorMao() != null) {
 			Attribute jogadorMao = new Attribute("jogadorMao", TrucoDescription.class);
 
 			simConfig.addMapping(jogadorMao, new Equal()); // jogador
 			simConfig.setWeight(jogadorMao, pesos.getPesoJogadorMao());
-		}
+		}*/
 		if (desc.getCartaAltaRobo() != null) {
 			Attribute cartaAltaRobo = new Attribute("cartaAltaRobo", TrucoDescription.class);
 			simConfig.addMapping(cartaAltaRobo, new Interval(52)); // carta
@@ -931,7 +933,7 @@ public interface CBR {
 			simConfig.setWeight(cartaBaixaRobo, pesos.getPesoCartaBaixaRobo());
 		}
 
-		if (desc.getPrimeiraCartaRobo() != null) {
+		/*if (desc.getPrimeiraCartaRobo() != null) {
 			Attribute primeiraCartaRobo = new Attribute("primeiraCartaRobo", TrucoDescription.class);
 			simConfig.addMapping(primeiraCartaRobo, new Interval(52)); // carta
 			simConfig.setWeight(primeiraCartaRobo, pesos.getPesoPrimeiraCartaRobo());
@@ -1016,7 +1018,7 @@ public interface CBR {
 
 			simConfig.setWeight(quandoValeQuatro, pesos.getPesoQuandoValeQuatro());
 
-		}
+		}*/
 
 		if (desc.getTentosAnterioresRobo() != null && !desc.getTentosAnterioresRobo().equals(0)) {
 
@@ -1213,10 +1215,10 @@ public interface CBR {
 		simConfig.setDescriptionSimFunction(new Average());
 		PesosConsulta pesos = new PesosConsulta();
 
-		if (desc.getJogadorMao() != null && !desc.getJogadorMao().equals(0))
-			simConfig.addMapping(new Attribute("jogadorMao", TrucoDescription.class), new Equal()); // jogador
+		/*if (desc.getJogadorMao() != null && !desc.getJogadorMao().equals(0))
+			simConfig.addMapping(new Attribute("jogadorMao", TrucoDescription.class), new Equal()); // jogador*/
 
-		if (desc.getCartaAltaRobo() != null && !desc.getCartaAltaRobo().equals(0)) {
+		/*if (desc.getCartaAltaRobo() != null && !desc.getCartaAltaRobo().equals(0)) {
 			Attribute cartaAltaRobo = new Attribute("cartaAltaRobo", TrucoDescription.class);
 			simConfig.addMapping(cartaAltaRobo, new Interval(52)); // carta
 			simConfig.setWeight(cartaAltaRobo, pesos.getPesoCartaAltaRobo());
@@ -1230,7 +1232,7 @@ public interface CBR {
 			Attribute cartaBaixaRobo = new Attribute("cartaBaixaRobo", TrucoDescription.class);
 			simConfig.addMapping(cartaBaixaRobo, new Interval(52)); // carta
 			simConfig.setWeight(cartaBaixaRobo, pesos.getPesoCartaBaixaRobo());
-		}
+		}*/
 
 		if (desc.getPrimeiraCartaHumano() != null && !desc.getPrimeiraCartaHumano().equals(0)) {
 			Attribute primeiraCartaHumano = new Attribute("primeiraCartaHumano", TrucoDescription.class);
@@ -1238,7 +1240,7 @@ public interface CBR {
 			simConfig.setWeight(primeiraCartaHumano, pesos.getPesoPrimeiraCartaHumano());
 		}
 
-		if (desc.getQuemPediuEnvido() != null && !desc.getQuemPediuEnvido().equals(0)) {
+		/*if (desc.getQuemPediuEnvido() != null && !desc.getQuemPediuEnvido().equals(0)) {
 			Attribute quemPediuEnvido = new Attribute("quemPediuEnvido", TrucoDescription.class);
 			simConfig.addMapping(quemPediuEnvido, new Equal()); // jogador
 			simConfig.setWeight(quemPediuEnvido, pesos.getPesoQuemPediuEnvido());
@@ -1254,7 +1256,7 @@ public interface CBR {
 			simConfig.addMapping(quemPediuFaltaEnvido, new Equal()); // jogador
 			simConfig.setWeight(quemPediuFaltaEnvido, pesos.getPesoQuemPediuFaltaEnvido());
 		}
-
+*/
 		if (desc.getPontosEnvidoRobo() != null && !desc.getPontosEnvidoRobo().equals(0)) {
 
 			Attribute pontosEnvidoRobo = new Attribute("pontosEnvidoRobo", TrucoDescription.class);
@@ -2104,6 +2106,8 @@ public interface CBR {
 
 
 	void realizaConfiguracoesIniciais();
+
+	void realizaConfiguracoesIniciais2(String cartaAlta, String cartaMedia, String cartaBaixa);
 
 	void setThreshold(double threshold);
 

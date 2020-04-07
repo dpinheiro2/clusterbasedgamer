@@ -33,18 +33,11 @@ public class AtualizarConsultas {
 		
 		cbr.setTentosAnterioresHumano(tentosOponente);
 		////System.out.println("tentos anteriores humano: "+ tentosOponente);
-		
-		
+
 		return cbr;
 	}
 
-	/**
-	 * @param quemEhMao
-	 * @param pontosEnvido
-	 * @param listaCartasJogadasOponente
-	 * @param quemPediuEnvido
-	 * @return
-	 */
+
 	public TrucoDescription atualizaConsultaRealEnvidoRobo(Integer quemEhMao, Integer pontosEnvido,
 			List<CartasModelo> listaCartasJogadasOponente, Integer quemPediuEnvido, int tentosAgente, int tentosOponente) {
 		TrucoDescription cbr = new TrucoDescription();
@@ -171,17 +164,7 @@ public class AtualizarConsultas {
 		return cbr;
 	}
 
-	
-	/**
-	 * @param JogadorMao
-	 * @param CartaAlta
-	 * @param CartaMedia
-	 * @param CartaBaixa
-	 * @param listaCartasJogadas
-	 * @param listaCartasJogadasOponente
-	 * @return
-	 */
-	public TrucoDescription atualizaConsultaCartaRobo(Integer JogadorMao, Integer CartaAlta, Integer CartaMedia,
+		public TrucoDescription atualizaConsultaCartaRobo(Integer JogadorMao, Integer CartaAlta, Integer CartaMedia,
 			Integer CartaBaixa, List<CartasModelo> listaCartasJogadas, List<CartasModelo> listaCartasJogadasOponente) {
 
 		TrucoDescription cbr = new TrucoDescription();

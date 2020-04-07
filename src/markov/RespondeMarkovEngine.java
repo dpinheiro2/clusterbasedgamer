@@ -215,9 +215,15 @@ public class RespondeMarkovEngine implements CBR{
 	}
 
 	@Override
-	public void realizaConfiguracoesIniciais() {
+	public void realizaConfiguracoesIniciais2(String cartaAlta, String cartaMedia, String cartaBaixa) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void realizaConfiguracoesIniciais() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
