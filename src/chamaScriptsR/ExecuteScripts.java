@@ -34,7 +34,7 @@ public class ExecuteScripts {
 		   
 			
 		   try {
-			   File file = new File("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/comando.R");
+			   File file = new File("C:/ufsm/scriptsR/comando.R");
 				if(file.exists()) file.delete();  
 			   file.createNewFile();
 	           
@@ -47,7 +47,7 @@ public class ExecuteScripts {
 	           bw.close();
 	           
 	           
-			   p = rt.exec("Rscript /home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/comando.R");
+			   p = rt.exec("C:/Program Files/R/R-3.6.1/bin/x64/Rscript.exe C:/ufsm/scriptsR/comando.R");
 			   
 			   BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			   String line;

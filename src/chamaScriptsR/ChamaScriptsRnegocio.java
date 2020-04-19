@@ -9,15 +9,16 @@ import java.util.List;
 public class ChamaScriptsRnegocio {
 
 	private ExecuteScripts execute = new ExecuteScripts();
+
 	public void controlaExecucaoTodosOsScripts(String base) {
 		String caminhoFuncaoAuxiliar ="";
-		if(base.equalsIgnoreCase("imitacao")) caminhoFuncaoAuxiliar ="/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/utilitarios/funcoesAuxiliaresImitacao.R";
-		else if(base.equalsIgnoreCase("ativo")) caminhoFuncaoAuxiliar ="/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/utilitarios/funcoesAuxiliaresAtivo.R";
-		else caminhoFuncaoAuxiliar ="/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/utilitarios/funcoesAuxiliaresDefault.R";
+		if(base.equalsIgnoreCase("imitacao")) caminhoFuncaoAuxiliar ="C:/ufsm/scriptsR/utilitarios/funcoesAuxiliaresImitacao.R";
+		else if(base.equalsIgnoreCase("ativo")) caminhoFuncaoAuxiliar ="C:/ufsm/scriptsR/utilitarios/funcoesAuxiliaresAtivo.R";
+		else caminhoFuncaoAuxiliar ="C:/ufsm/scriptsR/utilitarios/funcoesAuxiliaresDefault.R";
 		//pega o conteudo do arquivo de função auxiliar que deve ser utilizado
 		String conteudoScriptFuncoesAuxiliares = lerArquivo(caminhoFuncaoAuxiliar);
 		//conteudo elbow
-		String caminhoElbow = "/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/utilitarios/UtilitariosElbowEgraficosFinal.R"; 
+		String caminhoElbow = "C:/ufsm/scriptsR/utilitarios/UtilitariosElbowEgraficosFinal.R";
  		String conteudoScriptElbow = lerArquivo(caminhoElbow);
  		
  		 executeScriptsIndexacao(conteudoScriptFuncoesAuxiliares, conteudoScriptElbow);
@@ -34,11 +35,11 @@ public class ChamaScriptsRnegocio {
 		 * PrimeiraCarta
 		 */
 		//Execute primeira carta mão
-		String conteudoScriptTrucoPrimeiraCartaMao = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/truco/QuemTrucoPrimeiraMao.R");
+		String conteudoScriptTrucoPrimeiraCartaMao = lerArquivo("C:/ufsm/scriptsR/truco/QuemTrucoPrimeiraMao.R");
 		execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptTrucoPrimeiraCartaMao);
 		
 		//Execute primeira carta pé
-		String conteudoScriptTrucoPrimeiraCartaPe = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/truco/QuemTrucoPrimeiraPe.R");
+		String conteudoScriptTrucoPrimeiraCartaPe = lerArquivo("C:/ufsm/scriptsR/truco/QuemTrucoPrimeiraPe.R");
 		execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptTrucoPrimeiraCartaPe);
 		
 		/*
@@ -46,22 +47,22 @@ public class ChamaScriptsRnegocio {
 		 */
 		
 		//Execute segunda carta ganhou a primeira
-				String conteudoScriptTrucoSegundaCartaGanhouAnterior= lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/truco/QuemTrucoSegundaGanhouAnterior.R");
+				String conteudoScriptTrucoSegundaCartaGanhouAnterior= lerArquivo("C:/ufsm/scriptsR/truco/QuemTrucoSegundaGanhouAnterior.R");
 				execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptTrucoSegundaCartaGanhouAnterior);
 				
 				//Execute segunda perdeu a primeira
-				String conteudoScriptTrucoSegundaCartarooboPerdeuAnterior = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/truco/QuemTrucoSegundaPerdeuAnterior.R");
+				String conteudoScriptTrucoSegundaCartarooboPerdeuAnterior = lerArquivo("C:/ufsm/scriptsR/truco/QuemTrucoSegundaPerdeuAnterior.R");
 				execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptTrucoSegundaCartarooboPerdeuAnterior);
 				/*
 				 * Terceira carta
 				 */
 				
 				//Execute terceira carta ganhou a segunda
-						String conteudoScriptQuemTrucoTerceiraCartaGanhouAsegunda= lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/truco/QuemTrucoTerceiraGanhouAnterior.R");
+						String conteudoScriptQuemTrucoTerceiraCartaGanhouAsegunda= lerArquivo("C:/ufsm/scriptsR/truco/QuemTrucoTerceiraGanhouAnterior.R");
 						execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptQuemTrucoTerceiraCartaGanhouAsegunda);
 						
 						//Execute terceira carta perdeu a segunda
-						String conteudoScriptQuemTrucoTerceiraCartaPerdeuAsegunda = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/truco/QuemTrucoTerceiraPerdeuAnterior.R");
+						String conteudoScriptQuemTrucoTerceiraCartaPerdeuAsegunda = lerArquivo("C:/ufsm/scriptsR/truco/QuemTrucoTerceiraPerdeuAnterior.R");
 						execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptQuemTrucoTerceiraCartaPerdeuAsegunda );
 				
 				
@@ -72,11 +73,11 @@ public class ChamaScriptsRnegocio {
 		 * PrimeiraCarta
 		 */
 		//Execute primeira carta mão
-		String conteudoScriptPrimeiraCartaMao = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/cartas/scriptPrimeiraCartaRoboMao.R");
+		String conteudoScriptPrimeiraCartaMao = lerArquivo("C:/ufsm/scriptsR/cartas/scriptPrimeiraCartaRoboMao.R");
 		execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptPrimeiraCartaMao);
 		
 		//Execute primeira carta pé
-		String conteudoScriptPrimeiraCartaPe = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/cartas/scriptPrimeiraCartaRoboEpe.R");
+		String conteudoScriptPrimeiraCartaPe = lerArquivo("C:/ufsm/scriptsR/cartas/scriptPrimeiraCartaRoboEpe.R");
 		execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptPrimeiraCartaPe);
 		
 		/*
@@ -84,22 +85,22 @@ public class ChamaScriptsRnegocio {
 		 */
 		
 		//Execute segunda carta ganhou a primeira
-				String conteudoScriptSegundaCartaGanhouAprimeira= lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/cartas/segundaCartaRoboGanhouAprimeira.R");
+				String conteudoScriptSegundaCartaGanhouAprimeira= lerArquivo("C:/ufsm/scriptsR/cartas/segundaCartaRoboGanhouAprimeira.R");
 				execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptSegundaCartaGanhouAprimeira);
 				
 				//Execute segunda perdeu a primeira
-				String conteudoScriptSegundaCartarooboPerdeuAprimeira = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/cartas/segundaCartaroboPerdeuAprimeiraScript.R");
+				String conteudoScriptSegundaCartarooboPerdeuAprimeira = lerArquivo("C:/ufsm/scriptsR/cartas/segundaCartaroboPerdeuAprimeiraScript.R");
 				execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptSegundaCartarooboPerdeuAprimeira);
 				/*
 				 * Terceira carta
 				 */
 				
 				//Execute terceira carta ganhou a segunda
-						String conteudoScriptTerceiraCartaGanhouAsegunda= lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/cartas/scriptTerceiraCartaRoboGanhouAsegunda.R");
+						String conteudoScriptTerceiraCartaGanhouAsegunda= lerArquivo("C:/ufsm/scriptsR/cartas/scriptTerceiraCartaRoboGanhouAsegunda.R");
 						execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptTerceiraCartaGanhouAsegunda);
 						
 						//Execute terceira carta perdeu a segunda
-						String conteudoScriptTerceiraCartaPerdeuAsegunda = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/cartas/scriptTerceiraCartaRoboPerdeuAsegunda.R");
+						String conteudoScriptTerceiraCartaPerdeuAsegunda = lerArquivo("C:/ufsm/scriptsR/cartas/scriptTerceiraCartaRoboPerdeuAsegunda.R");
 						execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptTerceiraCartaPerdeuAsegunda );
 				
 				
@@ -107,21 +108,21 @@ public class ChamaScriptsRnegocio {
 	
 	private void executeScriptsPontos(String conteudoScriptFuncoesAuxiliares, String ScriptConteudoElbow) {
 		//Execute indexacao jogadas
-		String conteudoScriptEnvidoMao = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/envido/scriptQuemGanhouEnvidoAgenteMao.R");
+		String conteudoScriptEnvidoMao = lerArquivo("C:/ufsm/scriptsR/envido/scriptQuemGanhouEnvidoAgenteMao.R");
 		execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptEnvidoMao);
 		
 		//Execute indexacaoPontos
-		String conteudoScriptEnvidoPe = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/envido/scriptQuemGanhouEnvidoAgentePe.R");
+		String conteudoScriptEnvidoPe = lerArquivo("C:/ufsm/scriptsR/envido/scriptQuemGanhouEnvidoAgentePe.R");
 		execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptEnvidoPe);
 	}
 	
 	private void executeScriptsIndexacao(String conteudoScriptFuncoesAuxiliares, String ScriptConteudoElbow) {
 		//Execute indexacao jogadas
-		String conteudoScriptIndexacaoJogada = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/indexacao/indexacao.R");
+		String conteudoScriptIndexacaoJogada = lerArquivo("C:/ufsm/scriptsR/indexacao/indexacao.R");
 		execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptIndexacaoJogada);
 		
 		//Execute indexacaoPontos
-		String conteudoScriptIndexacaoPontos = lerArquivo("/home/gustavo/Mestrado/CodigoDissertacao/clusterBasedGamer/src/scriptsR/indexacao/indexacaoPontos.R");
+		String conteudoScriptIndexacaoPontos = lerArquivo("C:/ufsm/scriptsR/indexacao/indexacaoPontos.R");
 		execute.executeRscripts(conteudoScriptFuncoesAuxiliares, ScriptConteudoElbow, conteudoScriptIndexacaoPontos);
 	}
 	

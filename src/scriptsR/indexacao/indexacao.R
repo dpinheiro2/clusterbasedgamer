@@ -8,7 +8,7 @@ casos <- scale(casos)
 set.seed(1)
 k <- retornaK(20, casos)
 k
-CriarElbow(20, casos)
+#CriarElbow(20, casos)
 sqlK<- ("select MAX(clusteringindexacao) from maos;")
 kRecebido <- executeSelectMysql(sqlK,"trucocbr")
 

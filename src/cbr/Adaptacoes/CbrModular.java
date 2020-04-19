@@ -2113,9 +2113,9 @@ public class CbrModular implements CBR {
 
                 if (pontosEnvido > -1) {
                     if (!carta.equals("")) {
-                        prob = 1 - deck.getProbabilidadeMelhorEnvido(isHand, pontosEnvido, carta);
+                        prob = deck.getProbBestPoint(isHand, pontosEnvido, deck.getFilteredOpponentHands(carta));
                     } else {
-                        prob = 1 - deck.getProbabilidadeMelhorEnvido(isHand, pontosEnvido);
+                        prob = deck.getProbBestPoint(isHand, pontosEnvido, deck.getAllOpponentHands());
                     }
                 }
 
@@ -3598,7 +3598,7 @@ public class CbrModular implements CBR {
         closeConnection(_connectorCentroideQuemGanhouEnvidoAgentePeAtivo);
 
         // autoAjustarK
-        //autoAjustarK();
+        autoAjustarK();
 
     }
 
@@ -3719,8 +3719,18 @@ public class CbrModular implements CBR {
     //tem que vir do controlaRodadaAuto
     //Tipo de ação é envido ou truco apenas essas duas opções
 
-    public boolean deveChamarTelaAtivoEmCadaAcaoIndividual(String tipoAcao, boolean isOportunidadeBlefe, int rodada,
-                                                           TrucoDescription queryPadrao, TrucoDescription queryApenasAtributosDeBlefe) {
+    public boolean isCompetentCaseBase() {
+
+        boolean isCompetent = false;
+
+
+
+        return isCompetent;
+
+    }
+
+    public boolean deveChamarTelaAtivoEmCadaAcaoIndividual(String tipoAcao, int rodada, TrucoDescription queryPadrao,
+                                                           TrucoDescription queryApenasAtributosDeBlefe) {
         boolean retornoThreshold = false;
 
         //colllections para chamar a tela ou revisar
@@ -3831,7 +3841,7 @@ public class CbrModular implements CBR {
 
         }
 
-        return retornoThreshold && isOportunidadeBlefe;
+        return retornoThreshold;
     }
 
 
@@ -4481,25 +4491,28 @@ public class CbrModular implements CBR {
 
     public double getProbabilidadeMaoByEstadoJogo(int isHand, TrucoDescription queryDefault) {
 
-        double prob = deck.getProbabilidadeMelhorMao(isHand, getCartaByCodeESuit(queryDefault.getCartaAltaRobo(), queryDefault.getNaipeCartaAltaRobo()),
+        double agenteHandStrength = deck.getStrenghtHand(getCartaByCodeESuit(queryDefault.getCartaAltaRobo(), queryDefault.getNaipeCartaAltaRobo()),
                 getCartaByCodeESuit(queryDefault.getCartaMediaRobo(), queryDefault.getNaipeCartaMediaRobo()),
                 getCartaByCodeESuit(queryDefault.getCartaBaixaRobo(), queryDefault.getNaipeCartaBaixaRobo()));
 
+        double prob = deck.getProbBestHand(isHand, agenteHandStrength, deck.getAllOpponentHands());
+
         if (queryDefault.getPrimeiraCartaHumano() != null && queryDefault.getNaipePrimeiraCartaHumano() != null) {
 
-            prob = deck.getProbabilidadeMelhorMao(isHand, getCartaByCodeESuit(queryDefault.getCartaAltaRobo(), queryDefault.getNaipeCartaAltaRobo()),
-                    getCartaByCodeESuit(queryDefault.getCartaMediaRobo(), queryDefault.getNaipeCartaMediaRobo()),
-                    getCartaByCodeESuit(queryDefault.getCartaBaixaRobo(), queryDefault.getNaipeCartaBaixaRobo()),
-                    getCartaByCodeESuit(queryDefault.getPrimeiraCartaHumano(), queryDefault.getNaipePrimeiraCartaHumano()));
+            prob = deck.getProbBestHand(isHand, agenteHandStrength,
+                    deck.getFilteredOpponentHands(getCartaByCodeESuit(queryDefault.getPrimeiraCartaHumano(), queryDefault.getNaipePrimeiraCartaHumano())));
 
         } else if (queryDefault.getPrimeiraCartaHumano() != null && queryDefault.getNaipePrimeiraCartaHumano() != null &&
                 queryDefault.getSegundaCartaHumano() != null && queryDefault.getNaipeSegundaCartaHumano() != null) {
 
-            prob = deck.getProbabilidadeMelhorMao(isHand, getCartaByCodeESuit(queryDefault.getCartaAltaRobo(), queryDefault.getNaipeCartaAltaRobo()),
+            double agentHandStrength = deck.getStrenghtHand(getCartaByCodeESuit(queryDefault.getCartaAltaRobo(), queryDefault.getNaipeCartaAltaRobo()),
                     getCartaByCodeESuit(queryDefault.getCartaMediaRobo(), queryDefault.getNaipeCartaMediaRobo()),
-                    getCartaByCodeESuit(queryDefault.getCartaBaixaRobo(), queryDefault.getNaipeCartaBaixaRobo()),
-                    getCartaByCodeESuit(queryDefault.getPrimeiraCartaHumano(), queryDefault.getNaipePrimeiraCartaHumano()),
-                    getCartaByCodeESuit(queryDefault.getSegundaCartaHumano(), queryDefault.getNaipeSegundaCartaHumano()));
+                    getCartaByCodeESuit(queryDefault.getCartaBaixaRobo(), queryDefault.getNaipeCartaBaixaRobo()));
+
+            String card1 = getCartaByCodeESuit(queryDefault.getPrimeiraCartaHumano(), queryDefault.getNaipePrimeiraCartaHumano());
+            String card2 = getCartaByCodeESuit(queryDefault.getSegundaCartaHumano(), queryDefault.getNaipeSegundaCartaHumano());
+
+            prob = deck.getProbBestHand(isHand, agentHandStrength, deck.getFilteredOpponentHands( card1, card2));
 
         } else if (queryDefault.getPrimeiraCartaHumano() != null && queryDefault.getNaipePrimeiraCartaHumano() != null &&
                 queryDefault.getSegundaCartaHumano() != null && queryDefault.getNaipeSegundaCartaHumano() != null &&

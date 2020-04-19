@@ -65,8 +65,10 @@ public class Hand {
 
         double strenght = 0.0;
 
+        double mediaHarmonica =  (2.0 / ( (1.0/hand.getCard1().getCbrCode()) + (1.0/hand.getCard2().getCbrCode()) )) ;
+        double mediaAritmeticaPonderada = ( ((2.0 * hand.getCard2().getCbrCode()) + hand.getCard3().getCbrCode()) / 3);
 
-        strenght = (( hand.getCard1().getHierarquia() + hand.getCard2().getHierarquia() + hand.getCard3().getHierarquia()) / 3);
+        strenght =(( (mediaHarmonica * 2) + mediaAritmeticaPonderada ) / 3 );
 
         return strenght;
     }
