@@ -1495,6 +1495,35 @@ public class CbrModular implements CBR {
         return bestMatch;
     }
 
+//============================= Métodos Vargas =======================================
+
+    public Collection<RetrievalResult> retornaRecuperadosFiltradoPontosEx(TrucoDescription gamestate, double threshold) {
+
+        if (casosUteisEnvidoJaIndexado == null || indexacaoEnvido == 0)
+            setaGrupoMaisSimilarIndexadoPontos(gamestate);
+
+        Collection<RetrievalResult> bestMatch = getBestResultCluster(casosUteisEnvidoJaIndexado, gamestate,
+                pontoClusterEx);
+
+        bestMatch = FiltraResultsEnvido(bestMatch, threshold, gamestate);
+
+        return bestMatch;
+    }
+
+    public Collection<RetrievalResult> retornaRecuperadosFiltradosTrucoEx(TrucoDescription gamestate, double threshold,
+                                                                          int rodada) {
+        if (casosUteisTrucoJaIndexado == null || indexacaoJogada == 0)
+            setaGrupoMaisSimilarIndexadoJogada(gamestate);
+
+        Collection<RetrievalResult> bestMatch = getBestResultCluster(casosUteisTrucoJaIndexado, gamestate,
+                trucoCartaCluster);
+        Collection<RetrievalResult> bestRoboFiltrado = FiltraResultsTruco(bestMatch, threshold, gamestate, rodada,
+                kMinimo);
+        return bestRoboFiltrado;
+    }
+
+    //============================= Fim Métodos Vargas =======================================
+
     public Collection<RetrievalResult> retornaRecuperadosFiltradoPontos(TrucoDescription gamestate, double threshold) {
         // ////System.out.println("casosUteisEnvidoJaIndexado "+
         // casosUteisEnvidoJaIndexado.size());
@@ -1849,6 +1878,8 @@ public class CbrModular implements CBR {
         return bestRoboFiltrado;
     }
 
+
+
     public Collection<RetrievalResult> retornaRecuperadosFiltradosTruco(TrucoDescription gamestate, double threshold,
                                                                         int rodada) {
         if (casosUteisTrucoJaIndexado == null || indexacaoJogada == 0)
@@ -1989,7 +2020,7 @@ public class CbrModular implements CBR {
     }
 
     public boolean realizaRevisaoAtivoBkp(TrucoDescription queryDefault, boolean acaoParaSerFeita, Collection<RetrievalResult> bestMatch,
-                                       int tipoConsulta, String move, int rodada, double novoThreshold){
+                                          int tipoConsulta, String move, int rodada, double novoThreshold){
         try {
             int count = 0;
             Collection<CBRCase> apenasCasosDeAtivo = FiltraAprendidosPeloAtivo(bestMatch);
@@ -2121,11 +2152,11 @@ public class CbrModular implements CBR {
 
                 break;
             case "JOGADA":
-                prob = (1 - getProbabilidadeMaoByEstadoJogo(isHand, queryDefault));
+                prob = getProbHandByGameState(isHand, queryDefault);
                 break;
         }
 
-        System.out.println("[PROBABILIDADE_CBR_MODULAR] --> " + prob);
+       // System.out.println("[PROBABILIDADE_CBR_MODULAR] --> " + prob);
 
         deveRevisar = (prob < 0.5 || prob > 0.85);
 
@@ -3729,7 +3760,66 @@ public class CbrModular implements CBR {
 
     }
 
-    public boolean deveChamarTelaAtivoEmCadaAcaoIndividual(String tipoAcao, int rodada, TrucoDescription queryPadrao,
+    public Collection<RetrievalResult> getCasosRecuperadosFiltrados(String tipoAcao, int rodada, TrucoDescription queryPadrao) {
+
+        Collection<RetrievalResult> casosRecuperados = null;
+
+        if (tipoAcao.equalsIgnoreCase("envido")) {
+
+            //Recupera os casos mais similares com threshold flutuante
+            casosRecuperados = retornaRecuperadosFiltradoPontosEx(queryPadrao, thresholdAprendizagem);
+            System.out.println("[ENVIDO] Casos Recuperados Filtrados PADRÃO " + casosRecuperados.size());
+
+        } else if (tipoAcao.equalsIgnoreCase("truco") || tipoAcao.equalsIgnoreCase("carta") ) {
+
+            if (rodada == 1) {
+                //Recupera os casos mais similares com threshold flutuante
+                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, thresholdAprendizagem, 1);
+                System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperados.size());
+            }
+
+            if (rodada == 2) {
+                //Recupera os casos mais similares com threshold flutuante
+                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, thresholdAprendizagem, 2);
+                System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperados.size());
+            }
+
+            if (rodada == 3) {
+                //Recupera os casos mais similares com threshold flutuante
+                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, thresholdAprendizagem, 3);
+                System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperados.size());
+            }
+        }
+
+        return casosRecuperados;
+
+    }
+
+    public boolean deveChamarTelaAtivoEmCadaAcaoIndividual(Collection<RetrievalResult> casosRecuperadosPadrao,
+                                                           TrucoDescription queryApenasAtributosDeBlefe) {
+        boolean retornoThreshold = false;
+
+        //colllections para chamar a tela ou revisar
+        Collection<CBRCase> casosAtributosBlefe;
+
+        //Filtra desses casos recuperados somente aqueles que foram aprendidos ativamente
+        casosAtributosBlefe = FiltraAprendidosPeloAtivo(casosRecuperadosPadrao);
+        System.out.println("Casos Recuperados Filtrados AL " + casosAtributosBlefe.size());
+
+        //Computa similaridade apenas com os atributos de blefe
+        Collection<RetrievalResult> casosRecuperadosBlefe = getBestResultCluster(casosAtributosBlefe, queryApenasAtributosDeBlefe, active);
+
+        //Recupera as situações de blefes mais similares de acordo com o threshold Ativo
+        Collection<RetrievalResult> filtradosBlefe = filtraResultsBlefe(casosRecuperadosBlefe, thresholdAprendizadoAtivo);
+        System.out.println("Casos Filtrados Blefe " + filtradosBlefe.size());
+
+        retornoThreshold = validaCriterioDeveAprender.aprenderAtivoOuAleatorio(filtradosBlefe);
+
+
+        return retornoThreshold;
+    }
+
+    /*public boolean deveChamarTelaAtivoEmCadaAcaoIndividual(String tipoAcao, int rodada, TrucoDescription queryPadrao,
                                                            TrucoDescription queryApenasAtributosDeBlefe) {
         boolean retornoThreshold = false;
 
@@ -3739,7 +3829,7 @@ public class CbrModular implements CBR {
         if (tipoAcao.equalsIgnoreCase("envido")) {
 
             //Recupera os casos mais similares com threshold flutuante
-            Collection<RetrievalResult> casosRecuperadosEnvidoPadrao = retornaRecuperadosFiltradoPontos(queryPadrao,
+            Collection<RetrievalResult> casosRecuperadosEnvidoPadrao = retornaRecuperadosFiltradoPontosEx(queryPadrao,
                     thresholdAprendizagem);
 
             System.out.println("[ENVIDO] Casos Recuperados Filtrados PADRÃO " + casosRecuperadosEnvidoPadrao.size());
@@ -3764,7 +3854,7 @@ public class CbrModular implements CBR {
 
             if (rodada == 1) {
                 //Recupera os casos mais similares com threshold flutuante
-                Collection<RetrievalResult> casosRecuperadosTrucoPrimeiraRodadaPadrao = retornaRecuperadosFiltradosTruco(queryPadrao,
+                Collection<RetrievalResult> casosRecuperadosTrucoPrimeiraRodadaPadrao = retornaRecuperadosFiltradosTrucoEx(queryPadrao,
                         thresholdAprendizagem, 1);
 
                 System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperadosTrucoPrimeiraRodadaPadrao.size());
@@ -3790,7 +3880,7 @@ public class CbrModular implements CBR {
             }
             if (rodada == 2) {
                 //Recupera os casos mais similares com threshold flutuante
-                Collection<RetrievalResult> casosRecuperadosTrucoSegundaRodadaPadrao = retornaRecuperadosFiltradosTruco(queryPadrao,
+                Collection<RetrievalResult> casosRecuperadosTrucoSegundaRodadaPadrao = retornaRecuperadosFiltradosTrucoEx(queryPadrao,
                         thresholdAprendizagem, 2);
 
                 System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperadosTrucoSegundaRodadaPadrao.size());
@@ -3816,7 +3906,7 @@ public class CbrModular implements CBR {
             if (rodada == 3) {
 
                 //Recupera os casos mais similares com threshold flutuante
-                Collection<RetrievalResult> casosRecuperadosTrucoTerceiraRodadaPadrao = retornaRecuperadosFiltradosTruco(queryPadrao,
+                Collection<RetrievalResult> casosRecuperadosTrucoTerceiraRodadaPadrao = retornaRecuperadosFiltradosTrucoEx(queryPadrao,
                         thresholdAprendizagem, 3);
 
                 System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperadosTrucoTerceiraRodadaPadrao.size());
@@ -3842,7 +3932,7 @@ public class CbrModular implements CBR {
         }
 
         return retornoThreshold;
-    }
+    }*/
 
 
 
@@ -4487,6 +4577,101 @@ public class CbrModular implements CBR {
 
     public void setActiveLearning(boolean activeLearning) {
         this.activeLearning = activeLearning;
+    }
+
+    public double getProbHandByGameState(int isHand, TrucoDescription queryDefault) {
+
+        double agentHandStrength = deck.getStrenghtHand(getCartaByCodeESuit(queryDefault.getCartaAltaRobo(), queryDefault.getNaipeCartaAltaRobo()),
+                getCartaByCodeESuit(queryDefault.getCartaMediaRobo(), queryDefault.getNaipeCartaMediaRobo()),
+                getCartaByCodeESuit(queryDefault.getCartaBaixaRobo(), queryDefault.getNaipeCartaBaixaRobo()));
+
+        double prob = deck.getProbBestHand(isHand, agentHandStrength, deck.getAllOpponentHands());
+
+        if (queryDefault.getPrimeiraCartaHumano() != null && queryDefault.getNaipePrimeiraCartaHumano() != null) {
+
+            prob = deck.getProbBestHand(isHand, agentHandStrength,
+                    deck.getFilteredOpponentHands(getCartaByCodeESuit(queryDefault.getPrimeiraCartaHumano(),
+                            queryDefault.getNaipePrimeiraCartaHumano())));
+
+        } else if (queryDefault.getPrimeiraCartaHumano() != null && queryDefault.getNaipePrimeiraCartaHumano() != null &&
+                queryDefault.getSegundaCartaHumano() != null && queryDefault.getNaipeSegundaCartaHumano() != null){
+
+            String card1 = getCartaByCodeESuit(queryDefault.getPrimeiraCartaHumano(), queryDefault.getNaipePrimeiraCartaHumano());
+            String card2 = getCartaByCodeESuit(queryDefault.getSegundaCartaHumano(), queryDefault.getNaipeSegundaCartaHumano());
+
+            prob = deck.getProbBestHand(isHand, agentHandStrength, deck.getFilteredOpponentHands( card1, card2));
+
+        } else if (queryDefault.getPrimeiraCartaHumano() != null && queryDefault.getNaipePrimeiraCartaHumano() != null &&
+                queryDefault.getSegundaCartaHumano() != null && queryDefault.getNaipeSegundaCartaHumano() != null &&
+                queryDefault.getTerceiraCartaHumano() != null && queryDefault.getNaipeTerceiraCartaHumano() != null) {
+
+            if (isHand == 1) {
+
+                if (!queryDefault.getPrimeiraCartaRobo().equals(queryDefault.getCartaAltaRobo())
+                        && !queryDefault.getSegundaCartaRobo().equals(queryDefault.getCartaAltaRobo())) {
+
+                    if (queryDefault.getCartaAltaRobo() >= queryDefault.getTerceiraCartaHumano()) {
+                        prob = 1.0;
+                    } else {
+                        prob = 0.0;
+                    }
+
+                } else if (!queryDefault.getPrimeiraCartaRobo().equals(queryDefault.getCartaMediaRobo())
+                        && !queryDefault.getSegundaCartaRobo().equals(queryDefault.getCartaMediaRobo())) {
+
+                    if (queryDefault.getCartaMediaRobo() >= queryDefault.getTerceiraCartaHumano()) {
+                        prob = 1.0;
+                    } else {
+                        prob = 0.0;
+                    }
+
+                } else if (!queryDefault.getPrimeiraCartaRobo().equals(queryDefault.getCartaBaixaRobo())
+                        && !queryDefault.getSegundaCartaRobo().equals(queryDefault.getCartaBaixaRobo())) {
+
+                    if (queryDefault.getCartaBaixaRobo() >= queryDefault.getTerceiraCartaHumano()) {
+                        prob = 1.0;
+                    } else {
+                        prob = 0.0;
+                    }
+
+                }
+
+            } else {
+
+                if (!queryDefault.getPrimeiraCartaRobo().equals(queryDefault.getCartaAltaRobo())
+                        && !queryDefault.getSegundaCartaRobo().equals(queryDefault.getCartaAltaRobo())) {
+
+                    if (queryDefault.getCartaAltaRobo() > queryDefault.getTerceiraCartaHumano()) {
+                        prob = 1.0;
+                    } else {
+                        prob = 0.0;
+                    }
+
+                } else if (!queryDefault.getPrimeiraCartaRobo().equals(queryDefault.getCartaMediaRobo())
+                        && !queryDefault.getSegundaCartaRobo().equals(queryDefault.getCartaMediaRobo())) {
+
+                    if (queryDefault.getCartaMediaRobo() > queryDefault.getTerceiraCartaHumano()) {
+                        prob = 1.0;
+                    } else {
+                        prob = 0.0;
+                    }
+
+                } else if (!queryDefault.getPrimeiraCartaRobo().equals(queryDefault.getCartaBaixaRobo())
+                        && !queryDefault.getSegundaCartaRobo().equals(queryDefault.getCartaBaixaRobo())) {
+
+                    if (queryDefault.getCartaBaixaRobo() > queryDefault.getTerceiraCartaHumano()) {
+                        prob = 1.0;
+                    } else {
+                        prob = 0.0;
+                    }
+
+                }
+
+            }
+
+        }
+
+        return prob;
     }
 
     public double getProbabilidadeMaoByEstadoJogo(int isHand, TrucoDescription queryDefault) {

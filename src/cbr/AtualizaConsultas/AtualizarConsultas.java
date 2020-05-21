@@ -13,9 +13,106 @@ import cbr.AtualizaConsultas.AuxiliaConsultas.JogadasChamadasModelo;
 
 public class AtualizarConsultas {
 
+	public TrucoDescription atualizaConsultaEnvidoPadrao(Integer quemEhMao, Integer pontosEnvido,
+														 List<CartasModelo> listaCartasJogadasOponente, Integer quemPediuEnvido,
+														 Integer quemPediuRealEnvido, Integer quemPediuFaltaEnvido,
+														 int tentosAgente, int tentosOponente) {
+
+		TrucoDescription cbr = new TrucoDescription();
+		cbr.setJogadorMao(quemEhMao);
+		cbr.setPontosEnvidoRobo(pontosEnvido);
+
+		if (listaCartasJogadasOponente.size() >= 1) {
+			cbr.setPrimeiraCartaHumano(listaCartasJogadasOponente.get(0).getId());
+		}
+
+		if (quemPediuEnvido != 0 && quemPediuEnvido != null) {
+			cbr.setQuemPediuEnvido(quemPediuEnvido);
+		}
+
+		if (quemPediuRealEnvido != 0 && quemPediuRealEnvido != null) {
+			cbr.setQuemPediuRealEnvido(quemPediuRealEnvido);
+		}
+
+		if (quemPediuFaltaEnvido != 0 && quemPediuFaltaEnvido != null) {
+			cbr.setQuemPediuFaltaEnvido(quemPediuFaltaEnvido);
+		}
+
+		cbr.setTentosAnterioresRobo(tentosAgente);
+		cbr.setTentosAnterioresHumano(tentosOponente);
+
+		return cbr;
+	}
+
+	public TrucoDescription atualizaConsultaTrucoCartaPadrao(Integer JogadorMao, List<CartasModelo> listaCartasRecebidas,
+															 Integer GanhadorPrimeiraRodada, Integer GanhadorSegundaRodada,
+															 Integer QuemTruco, Integer QuemRetruco, Integer QuemValeQuatro,
+															 List<CartasModelo> listaCartasJogadas,
+															 List<CartasModelo> listaCartasJogadasOponente,
+															 List<JogadasChamadasModelo> listaJogadasChamadas, Integer QuandoTruco,
+															 Integer QuandoRetruco, Integer QuandoValeQuatro,
+															 int tentosRobo, int tentosOponente) {
+
+		TrucoDescription cbr = new TrucoDescription();
+
+		cbr.setJogadorMao(JogadorMao);
+
+		cbr.setCartaAltaRobo(listaCartasRecebidas.get(0).getId());
+		cbr.setCartaMediaRobo(listaCartasRecebidas.get(1).getId());
+		cbr.setCartaBaixaRobo(listaCartasRecebidas.get(2).getId());
+
+		if (listaCartasJogadas.size() >= 1)
+			cbr.setPrimeiraCartaRobo(listaCartasJogadas.get(0).getId());
+		if (listaCartasJogadas.size() >= 2)
+			cbr.setSegundaCartaRobo(listaCartasJogadas.get(1).getId());
+		if (listaCartasJogadas.size() >= 3)
+			cbr.setTerceiraCartaRobo(listaCartasJogadas.get(2).getId());
+
+		if (listaCartasJogadasOponente.size() >= 1)
+			cbr.setPrimeiraCartaHumano(listaCartasJogadasOponente.get(0).getId());
+		if (listaCartasJogadasOponente.size() >= 2)
+			cbr.setSegundaCartaHumano(listaCartasJogadasOponente.get(1).getId());
+		if (listaCartasJogadasOponente.size() >= 3)
+			cbr.setTerceiraCartaHumano(listaCartasJogadasOponente.get(2).getId());
+
+		if (GanhadorPrimeiraRodada != null)
+
+			cbr.setGanhadorPrimeiraRodada(GanhadorPrimeiraRodada);
+		if (GanhadorSegundaRodada != null)
+
+			cbr.setGanhadorSegundaRodada(GanhadorSegundaRodada);
+
+
+		if (listaJogadasChamadas.size() >= 1)
+			cbr.setQuemTruco(QuemTruco);
+
+		if (listaJogadasChamadas.size() >= 2)
+			cbr.setQuemRetruco(QuemRetruco);
+
+		if (listaJogadasChamadas.size() >= 3)
+			cbr.setQuemValeQuatro(QuemValeQuatro);
+
+		if(QuandoTruco != null && !QuandoTruco.equals(0))
+			cbr.setQuandoTruco(QuandoTruco);
+		if(QuandoRetruco != null && !QuandoRetruco.equals(0))
+			cbr.setQuandoRetruco(QuandoRetruco);
+		if(QuandoValeQuatro != null && !QuandoValeQuatro.equals(0))
+			cbr.setQuandoValeQuatro(QuandoValeQuatro);
+
+		if(tentosRobo != 0)
+			cbr.setTentosAnterioresRobo(tentosRobo);
+		if(tentosOponente != 0)
+			cbr.setTentosAnterioresHumano(tentosOponente);
+
+
+		return cbr;
+	}
+
+ ///================================================Fim Métodos Vargas=======================
+
 
 	public TrucoDescription atualizaConsultaEnvidoRobo(Integer quemEhMao, Integer pontosEnvido,
-			List<CartasModelo> listaCartasJogadasOponente, int tentosAgente, int tentosOponente) {
+			List<CartasModelo> listaCartasJogadasOponente,  int tentosAgente, int tentosOponente) {
 		TrucoDescription cbr = new TrucoDescription();
 		////System.out.println("atualiza consulta envido");
 		cbr.setJogadorMao(quemEhMao);
@@ -214,7 +311,7 @@ public class AtualizarConsultas {
 
 		}
 
-		salvaLog("\natualiza consulta carta robo \n" + cbr.toString());
+		//salvaLog("\natualiza consulta carta robo \n" + cbr.toString());
 		return cbr;
 	}
 

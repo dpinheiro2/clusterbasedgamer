@@ -1,6 +1,7 @@
 package utils;
 
 import cbr.AtualizaConsultas.AuxiliaConsultas.CartasModelo;
+import cbr.cbrDescriptions.TrucoDescription;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -66,6 +67,9 @@ public class GameState implements Serializable {
     private LinkedList<Action> tableCards;
     private List<CartasModelo> handImageCards;
 
+    private TrucoDescription casoMaisSimilar;
+    private double similarity;
+    private int caseId;
 
     public GameState() {
         prob = 0.0;
@@ -110,6 +114,10 @@ public class GameState implements Serializable {
 
         tableCards = new LinkedList<>();
         handImageCards = new ArrayList<>();
+
+        casoMaisSimilar = null;
+        similarity = 0.0;
+        caseId = 0;
 
     }
 
@@ -447,5 +455,29 @@ public class GameState implements Serializable {
 
     public void setHandImageCards(List<CartasModelo> handImageCards) {
         this.handImageCards = handImageCards;
+    }
+
+    public TrucoDescription getCasoMaisSimilar() {
+        return casoMaisSimilar;
+    }
+
+    public void setCasoMaisSimilar(TrucoDescription casoMaisSimilar) {
+        this.casoMaisSimilar = casoMaisSimilar;
+    }
+
+    public double getSimilarity() {
+        return similarity;
+    }
+
+    public void setSimilarity(double similarity) {
+        this.similarity = similarity;
+    }
+
+    public int getCaseId() {
+        return caseId;
+    }
+
+    public void setCaseId(int caseId) {
+        this.caseId = caseId;
     }
 }
