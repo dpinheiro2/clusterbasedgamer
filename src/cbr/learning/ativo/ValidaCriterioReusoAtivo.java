@@ -15,14 +15,16 @@ public class ValidaCriterioReusoAtivo implements ValidaCriterioReusoAtivoOuAleat
 
 		System.out.println("Casos Filtrados " + resultRecuperado.size());
 				
-		return resultRecuperado.size() < 5? true: false;
+		//return resultRecuperado.size() < 5? true: false;
+		return resultRecuperado.size() == 0 ? true: false;
 	}
 
 	@Override
 	public boolean aprenderAtivoOuAleatorio(List<TrucoDescription> resultRecuperado) {
 
 		System.out.println("Casos Filtrados " + resultRecuperado.size());
-		return resultRecuperado.size() < 5? true: false;
+		//return resultRecuperado.size() < 5? true: false;
+		return resultRecuperado.size() == 0 ? true: false;
 	}
 
 	@Override

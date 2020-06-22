@@ -863,8 +863,8 @@ public class CbrModular implements CBR {
 
     Double thresholdReuso = 0.98;
     Double thresholdAprendizagem = 0.98;
-    Double thresholdAprendizadoAtivo = 0.5;
-    int kMinimo = 5;
+    Double thresholdAprendizadoAtivo = 0.98;
+    int kMinimo = 1;
     double taxaDeAdaptacaoThreshold = 0.02;
 
     CaseBasesModelo caseBases;
@@ -1331,6 +1331,8 @@ public class CbrModular implements CBR {
     public CaseBasesModelo preencheCaseBase() {
         caseBases.set_caseBaseMaos(_caseBaseMaos.getCases());
 
+        //System.out.println("Casos Totais: " + caseBases.get_caseBaseMaos().size());
+
         caseBases.set_caseBaseCentroidesGrupoIndexacao(_caseBaseCentroidesGrupoIndexacao.getCases());
 
         caseBases.set_caseBaseCentroidesGrupoIndexacaoPontos(_caseBaseCentroidesGrupoIndexacaoPontos.getCases());
@@ -1499,10 +1501,13 @@ public class CbrModular implements CBR {
 
     public Collection<RetrievalResult> retornaRecuperadosFiltradoPontosEx(TrucoDescription gamestate, double threshold) {
 
-        if (casosUteisEnvidoJaIndexado == null || indexacaoEnvido == 0)
+        /*if (casosUteisEnvidoJaIndexado == null || indexacaoEnvido == 0)
             setaGrupoMaisSimilarIndexadoPontos(gamestate);
 
         Collection<RetrievalResult> bestMatch = getBestResultCluster(casosUteisEnvidoJaIndexado, gamestate,
+                pontoClusterEx);*/
+
+        Collection<RetrievalResult> bestMatch = getBestResultCluster(_caseBaseMaos.getCases(), gamestate,
                 pontoClusterEx);
 
         bestMatch = FiltraResultsEnvido(bestMatch, threshold, gamestate);
@@ -1512,13 +1517,18 @@ public class CbrModular implements CBR {
 
     public Collection<RetrievalResult> retornaRecuperadosFiltradosTrucoEx(TrucoDescription gamestate, double threshold,
                                                                           int rodada) {
-        if (casosUteisTrucoJaIndexado == null || indexacaoJogada == 0)
+        /*if (casosUteisTrucoJaIndexado == null || indexacaoJogada == 0)
             setaGrupoMaisSimilarIndexadoJogada(gamestate);
 
         Collection<RetrievalResult> bestMatch = getBestResultCluster(casosUteisTrucoJaIndexado, gamestate,
+                trucoCartaCluster);*/
+
+        Collection<RetrievalResult> bestMatch = getBestResultCluster(_caseBaseMaos.getCases(), gamestate,
                 trucoCartaCluster);
+
         Collection<RetrievalResult> bestRoboFiltrado = FiltraResultsTruco(bestMatch, threshold, gamestate, rodada,
                 kMinimo);
+
         return bestRoboFiltrado;
     }
 
@@ -3629,7 +3639,7 @@ public class CbrModular implements CBR {
         closeConnection(_connectorCentroideQuemGanhouEnvidoAgentePeAtivo);
 
         // autoAjustarK
-        autoAjustarK();
+        //autoAjustarK();
 
     }
 
@@ -3767,26 +3777,26 @@ public class CbrModular implements CBR {
         if (tipoAcao.equalsIgnoreCase("envido")) {
 
             //Recupera os casos mais similares com threshold flutuante
-            casosRecuperados = retornaRecuperadosFiltradoPontosEx(queryPadrao, thresholdAprendizagem);
+            casosRecuperados = retornaRecuperadosFiltradoPontosEx(queryPadrao, 0.0);
             System.out.println("[ENVIDO] Casos Recuperados Filtrados PADRÃO " + casosRecuperados.size());
 
         } else if (tipoAcao.equalsIgnoreCase("truco") || tipoAcao.equalsIgnoreCase("carta") ) {
 
             if (rodada == 1) {
                 //Recupera os casos mais similares com threshold flutuante
-                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, thresholdAprendizagem, 1);
+                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, 0.0, 1);
                 System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperados.size());
             }
 
             if (rodada == 2) {
                 //Recupera os casos mais similares com threshold flutuante
-                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, thresholdAprendizagem, 2);
+                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, 0.0, 2);
                 System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperados.size());
             }
 
             if (rodada == 3) {
                 //Recupera os casos mais similares com threshold flutuante
-                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, thresholdAprendizagem, 3);
+                casosRecuperados = retornaRecuperadosFiltradosTrucoEx(queryPadrao, 0.0, 3);
                 System.out.println("[TRUCO/CARTA] Casos Recuperados Filtrados PADRÃO " + casosRecuperados.size());
             }
         }
@@ -3796,8 +3806,10 @@ public class CbrModular implements CBR {
     }
 
     public boolean deveChamarTelaAtivoEmCadaAcaoIndividual(Collection<RetrievalResult> casosRecuperadosPadrao,
-                                                           TrucoDescription queryApenasAtributosDeBlefe) {
+                                                           TrucoDescription queryApenasAtributosDeBlefe, int typeDecision) {
         boolean retornoThreshold = false;
+
+        System.out.println("Casos Recuperados Padrão " + casosRecuperadosPadrao.size());
 
         //colllections para chamar a tela ou revisar
         Collection<CBRCase> casosAtributosBlefe;
@@ -3807,7 +3819,8 @@ public class CbrModular implements CBR {
         System.out.println("Casos Recuperados Filtrados AL " + casosAtributosBlefe.size());
 
         //Computa similaridade apenas com os atributos de blefe
-        Collection<RetrievalResult> casosRecuperadosBlefe = getBestResultCluster(casosAtributosBlefe, queryApenasAtributosDeBlefe, active);
+        Collection<RetrievalResult> casosRecuperadosBlefe = getBestResultCluster(casosAtributosBlefe, queryApenasAtributosDeBlefe,
+                typeDecision == 1 ? activeEnvido : activeTruco);
 
         //Recupera as situações de blefes mais similares de acordo com o threshold Ativo
         Collection<RetrievalResult> filtradosBlefe = filtraResultsBlefe(casosRecuperadosBlefe, thresholdAprendizadoAtivo);

@@ -52,7 +52,8 @@ public interface CBR {
 	static final int trucoCartaCluster = 101;
 	static final int pontoClusterAL = 500;
 	static final int trucoClusterAL = 501;
-	static final int active = 1000;
+	static final int activeEnvido = 1000;
+	static final int activeTruco = 1001;
 	static final int trucoCluster = 6;
 	static final int recuperaGruposJogadas = 7;
 	static final int recuperaGruposQuemEnvidoAgenteMao = 10;
@@ -568,6 +569,7 @@ public interface CBR {
 
 	default Collection<RetrievalResult> executeQueryJogadaCluster(Collection<CBRCase> cases, CBRQuery query)
 			throws ExecutionException {
+
 		TrucoDescription desc = (TrucoDescription) query.getDescription();
 		NNConfig simConfig = new NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
@@ -721,190 +723,7 @@ public interface CBR {
 		return eval;
 	}
 
-	default Collection<RetrievalResult>  executeQueryActiveLearning(Collection<CBRCase> cases, CBRQuery query)
-			throws ExecutionException {
 
-		TrucoDescription desc = (TrucoDescription) query.getDescription();
-		NNConfig simConfig = new NNConfig();
-		simConfig.setDescriptionSimFunction(new Average());
-		PesosConsulta pesos = new PesosConsulta();
-
-		if (desc.getBluff1Success() != null && !desc.getBluff1Success().equals(-1)) {
-
-			Attribute bluff1Success = new Attribute("bluff1Success", TrucoDescription.class);
-			simConfig.addMapping(bluff1Success, new Equal()); // numero
-			simConfig.setWeight(bluff1Success, pesos.getBluff1Success());
-		}
-
-		if (desc.getBluff2Success() != null && !desc.getBluff2Success().equals(-1)) {
-
-			Attribute bluff2Success = new Attribute("bluff2Success", TrucoDescription.class);
-			simConfig.addMapping(bluff2Success, new Equal()); // numero
-			simConfig.setWeight(bluff2Success, pesos.getBluff1Success());
-		}
-
-		if (desc.getBluff3Success() != null && !desc.getBluff3Success().equals(-1)) {
-
-			Attribute bluff3Success = new Attribute("bluff3Success", TrucoDescription.class);
-			simConfig.addMapping(bluff3Success, new Equal()); // numero
-			simConfig.setWeight(bluff3Success, pesos.getBluff1Success());
-		}
-
-		if (desc.getBluff4Success() != null && !desc.getBluff4Success().equals(-1)) {
-
-			Attribute bluff4Success = new Attribute("bluff4Success", TrucoDescription.class);
-			simConfig.addMapping(bluff4Success, new Equal()); // numero
-			simConfig.setWeight(bluff4Success, pesos.getBluff1Success());
-		}
-
-		if (desc.getBluff5Success() != null && !desc.getBluff5Success().equals(-1)) {
-
-			Attribute bluff5Success = new Attribute("bluff5Success", TrucoDescription.class);
-			simConfig.addMapping(bluff5Success, new Equal()); // numero
-			simConfig.setWeight(bluff5Success, pesos.getBluff1Success());
-		}
-
-		if (desc.getBluff6Success() != null && !desc.getBluff6Success().equals(-1)) {
-
-			Attribute bluff6Success = new Attribute("bluff6Success", TrucoDescription.class);
-			simConfig.addMapping(bluff6Success, new Equal()); // numero
-			simConfig.setWeight(bluff6Success, pesos.getBluff1Success());
-		}
-
-		if (desc.getBluff1Failure() != null && !desc.getBluff1Failure().equals(-1)) {
-
-			Attribute bluff1Failure = new Attribute("bluff1Failure", TrucoDescription.class);
-			simConfig.addMapping(bluff1Failure, new Equal()); // numero
-			simConfig.setWeight(bluff1Failure, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff2Failure() != null && !desc.getBluff2Failure().equals(-1)) {
-
-			Attribute bluff2Failure = new Attribute("bluff2Failure", TrucoDescription.class);
-			simConfig.addMapping(bluff2Failure, new Equal()); // numero
-			simConfig.setWeight(bluff2Failure, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff3Failure() != null && !desc.getBluff3Failure().equals(-1)) {
-
-			Attribute bluff3Failure = new Attribute("bluff3Failure", TrucoDescription.class);
-			simConfig.addMapping(bluff3Failure, new Equal()); // numero
-			simConfig.setWeight(bluff3Failure, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff4Failure() != null && !desc.getBluff4Failure().equals(-1)) {
-
-			Attribute bluff4Failure = new Attribute("bluff4Failure", TrucoDescription.class);
-			simConfig.addMapping(bluff4Failure, new Equal()); // numero
-			simConfig.setWeight(bluff4Failure, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff5Failure() != null && !desc.getBluff5Failure().equals(-1)) {
-
-			Attribute bluff5Failure = new Attribute("bluff5Failure", TrucoDescription.class);
-			simConfig.addMapping(bluff5Failure, new Equal()); // numero
-			simConfig.setWeight(bluff5Failure, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff6Failure() != null && !desc.getBluff6Failure().equals(-1)) {
-
-			Attribute bluff6Failure = new Attribute("bluff6Failure", TrucoDescription.class);
-			simConfig.addMapping(bluff6Failure, new Equal()); // numero
-			simConfig.setWeight(bluff6Failure, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff1Opponent() != null && !desc.getBluff1Opponent().equals(-1)) {
-
-			Attribute bluff1Opponent = new Attribute("bluff1Opponent", TrucoDescription.class);
-			simConfig.addMapping(bluff1Opponent, new Equal()); // numero
-			simConfig.setWeight(bluff1Opponent, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff2Opponent() != null && !desc.getBluff2Opponent().equals(-1)) {
-
-			Attribute bluff2Opponent = new Attribute("bluff2Opponent", TrucoDescription.class);
-			simConfig.addMapping(bluff2Opponent, new Equal()); // numero
-			simConfig.setWeight(bluff2Opponent, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff3Opponent() != null && !desc.getBluff3Opponent().equals(-1)) {
-
-			Attribute bluff3Opponent = new Attribute("bluff3Opponent", TrucoDescription.class);
-			simConfig.addMapping(bluff3Opponent, new Equal()); // numero
-			simConfig.setWeight(bluff3Opponent, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff4Opponent() != null && !desc.getBluff4Opponent().equals(-1)) {
-
-			Attribute bluff4Opponent = new Attribute("bluff4Opponent", TrucoDescription.class);
-			simConfig.addMapping(bluff4Opponent, new Equal()); // numero
-			simConfig.setWeight(bluff4Opponent, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff5Opponent() != null && !desc.getBluff5Opponent().equals(-1)) {
-
-			Attribute bluff5Opponent = new Attribute("bluff5Opponent", TrucoDescription.class);
-			simConfig.addMapping(bluff5Opponent, new Equal()); // numero
-			simConfig.setWeight(bluff5Opponent, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff6Opponent() != null && !desc.getBluff6Opponent().equals(-1)) {
-
-			Attribute bluff6Opponent = new Attribute("bluff6Opponent", TrucoDescription.class);
-			simConfig.addMapping(bluff6Opponent, new Equal()); // numero
-			simConfig.setWeight(bluff6Opponent, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff1ShowDown() != null && !desc.getBluff1ShowDown().equals(-1)) {
-
-			Attribute bluff1ShowDown = new Attribute("bluff1ShowDown", TrucoDescription.class);
-			simConfig.addMapping(bluff1ShowDown, new Equal()); // numero
-			simConfig.setWeight(bluff1ShowDown, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff2ShowDown() != null && !desc.getBluff2ShowDown().equals(-1)) {
-
-			Attribute bluff2ShowDown = new Attribute("bluff2ShowDown", TrucoDescription.class);
-			simConfig.addMapping(bluff2ShowDown, new Equal()); // numero
-			simConfig.setWeight(bluff2ShowDown, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff3ShowDown() != null && !desc.getBluff3ShowDown().equals(-1)) {
-
-			Attribute bluff3ShowDown = new Attribute("bluff3ShowDown", TrucoDescription.class);
-			simConfig.addMapping(bluff3ShowDown, new Equal()); // numero
-			simConfig.setWeight(bluff3ShowDown, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff4ShowDown() != null && !desc.getBluff4ShowDown().equals(-1)) {
-
-			Attribute bluff4ShowDown = new Attribute("bluff4ShowDown", TrucoDescription.class);
-			simConfig.addMapping(bluff4ShowDown, new Equal()); // numero
-			simConfig.setWeight(bluff4ShowDown, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff5ShowDown() != null && !desc.getBluff5ShowDown().equals(-1)) {
-
-			Attribute bluff5ShowDown = new Attribute("bluff5ShowDown", TrucoDescription.class);
-			simConfig.addMapping(bluff5ShowDown, new Equal()); // numero
-			simConfig.setWeight(bluff5ShowDown, pesos.getBluff1Failure());
-		}
-
-		if (desc.getBluff6ShowDown() != null && !desc.getBluff6ShowDown().equals(-1)) {
-
-			Attribute bluff6ShowDown = new Attribute("bluff6ShowDown", TrucoDescription.class);
-			simConfig.addMapping(bluff6ShowDown, new Equal()); // numero
-			simConfig.setWeight(bluff6ShowDown, pesos.getBluff1Failure());
-		}
-
-
-		Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(cases, query, simConfig);
-
-		eval = SelectCases.selectTopKRR(eval, cases.size());
-
-		return eval;
-
-	}
 
 	default Collection<RetrievalResult> executeQueryJogadaClusterActiveLearning(Collection<CBRCase> cases, CBRQuery query)
 			throws ExecutionException {
@@ -1458,6 +1277,7 @@ public interface CBR {
 		NNConfig simConfig = new NNConfig();
 		simConfig.setDescriptionSimFunction(new Average());
 		PesosConsulta pesos = new PesosConsulta();
+
 		if (desc.getJogadorMao() != null && !desc.getJogadorMao().equals(0))
 			simConfig.addMapping(new Attribute("jogadorMao", TrucoDescription.class), new Equal()); // jogador
 		/*
@@ -1514,24 +1334,250 @@ public interface CBR {
 
 	//====================================== Métodos Vargas ===================================
 
-    default Collection<RetrievalResult> executeQueryPontoClusterEx(Collection<CBRCase> cases, CBRQuery query)
+	default Collection<RetrievalResult> executeQueryPontoClusterEx(Collection<CBRCase> cases, CBRQuery query)
+			throws ExecutionException {
+
+        System.out.println("[ENVIDO] Casos totais base de casos: " + cases.size());
+
+		TrucoDescription desc = (TrucoDescription) query.getDescription();
+		NNConfig simConfig = new NNConfig();
+		simConfig.setDescriptionSimFunction(new Average());
+		PesosConsulta pesos = new PesosConsulta();
+
+		if (desc.getJogadorMao() != null && !desc.getJogadorMao().equals(0)) {
+			simConfig.addMapping(new Attribute("jogadorMao", TrucoDescription.class), new Equal()); // jogador
+		}
+
+		if (desc.getPrimeiraCartaHumano() != null) {
+			Attribute primeiraCartaHumano = new Attribute("primeiraCartaHumano", TrucoDescription.class);
+			//simConfig.addMapping(primeiraCartaHumano, new Interval(52)); // carta
+			simConfig.addMapping(primeiraCartaHumano, new Equal()); // carta
+			simConfig.setWeight(primeiraCartaHumano, pesos.getPesoPrimeiraCartaHumano());
+		}
+
+		if (desc.getQuemPediuEnvido() != null && !desc.getQuemPediuEnvido().equals(0)) {
+			Attribute quemPediuEnvido = new Attribute("quemPediuEnvido", TrucoDescription.class);
+			simConfig.addMapping(quemPediuEnvido, new Equal()); // jogador
+			simConfig.setWeight(quemPediuEnvido, pesos.getPesoQuemPediuEnvido());
+		}
+
+		if (desc.getQuemPediuRealEnvido() != null && !desc.getQuemPediuRealEnvido().equals(0)) {
+			Attribute quemPediuRealEnvido = new Attribute("quemPediuRealEnvido", TrucoDescription.class);
+			simConfig.addMapping(quemPediuRealEnvido, new Equal()); // jogador
+			simConfig.setWeight(quemPediuRealEnvido, pesos.getPesoQuemPediuRealEnvido());
+		}
+
+		if (desc.getQuemPediuFaltaEnvido() != null && !desc.getQuemPediuFaltaEnvido().equals(0)) {
+			Attribute quemPediuFaltaEnvido = new Attribute("quemPediuFaltaEnvido", TrucoDescription.class);
+			simConfig.addMapping(quemPediuFaltaEnvido, new Equal()); // jogador
+			simConfig.setWeight(quemPediuFaltaEnvido, pesos.getPesoQuemPediuFaltaEnvido());
+		}
+
+		if (desc.getPontosEnvidoRobo() != null && !desc.getPontosEnvidoRobo().equals(0)) {
+			Attribute pontosEnvidoRobo = new Attribute("pontosEnvidoRobo", TrucoDescription.class);
+			simConfig.addMapping(pontosEnvidoRobo, new Equal()); // numero
+			simConfig.setWeight(pontosEnvidoRobo, pesos.getPesoPontosEnvidoRobo());
+		}
+
+		if (desc.getTentosAnterioresRobo() != null ) {
+			Attribute tentosAnterioresRobo = new Attribute("tentosAnterioresRobo", TrucoDescription.class);
+			simConfig.addMapping(tentosAnterioresRobo, new Equal()); // numero
+			simConfig.setWeight(tentosAnterioresRobo, pesos.getPesoTentosAnterioresRobo());
+		}
+
+		if (desc.getTentosAnterioresHumano() != null ) {
+			Attribute tentosAnterioresHumano = new Attribute("tentosAnterioresHumano", TrucoDescription.class);
+			simConfig.addMapping(tentosAnterioresHumano, new Equal()); // numero
+			simConfig.setWeight(tentosAnterioresHumano, pesos.getPesoTentosAnterioresHumano());
+		}
+
+
+		Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(cases, query, simConfig);
+		eval = SelectCases.selectTopKRR(eval, cases.size());
+
+
+		return eval;
+	}
+
+	default Collection<RetrievalResult> executeQueryJogadaClusterEx(Collection<CBRCase> cases, CBRQuery query)
+			throws ExecutionException {
+
+        System.out.println("[TRUCO] Casos totais base de casos: " + cases.size());
+
+		TrucoDescription desc = (TrucoDescription) query.getDescription();
+		NNConfig simConfig = new NNConfig();
+		simConfig.setDescriptionSimFunction(new Average());
+		PesosConsulta pesos = new PesosConsulta();
+
+		if (desc.getJogadorMao() != null) {
+			Attribute jogadorMao = new Attribute("jogadorMao", TrucoDescription.class);
+			simConfig.addMapping(jogadorMao, new Equal()); // jogador
+			simConfig.setWeight(jogadorMao, pesos.getPesoJogadorMao());
+		}
+
+		if (desc.getCartaAltaRobo() != null) {
+			Attribute cartaAltaRobo = new Attribute("cartaAltaRobo", TrucoDescription.class);
+			simConfig.addMapping(cartaAltaRobo, new Equal()); // carta
+			simConfig.setWeight(cartaAltaRobo, pesos.getPesoCartaAltaRobo());
+		}
+
+		if (desc.getCartaMediaRobo() != null) {
+			Attribute cartaMediaRobo = new Attribute("cartaMediaRobo", TrucoDescription.class);
+			simConfig.addMapping(cartaMediaRobo, new Equal()); // carta
+			simConfig.setWeight(cartaMediaRobo, pesos.getPesoCartaMediaRobo());
+		}
+
+		if (desc.getCartaBaixaRobo() != null) {
+			Attribute cartaBaixaRobo = new Attribute("cartaBaixaRobo", TrucoDescription.class);
+			simConfig.addMapping(cartaBaixaRobo, new Equal()); // carta
+			simConfig.setWeight(cartaBaixaRobo, pesos.getPesoCartaBaixaRobo());
+		}
+
+		if (desc.getPrimeiraCartaRobo() != null) {
+			Attribute primeiraCartaRobo = new Attribute("primeiraCartaRobo", TrucoDescription.class);
+			simConfig.addMapping(primeiraCartaRobo, new Equal()); // carta
+			simConfig.setWeight(primeiraCartaRobo, pesos.getPesoPrimeiraCartaRobo());
+		}
+
+		if (desc.getSegundaCartaRobo() != null) {
+			Attribute segundaCartaRobo = new Attribute("segundaCartaRobo", TrucoDescription.class);
+			simConfig.addMapping(segundaCartaRobo, new Equal()); // carta
+			simConfig.setWeight(segundaCartaRobo, pesos.getPesoSegundaCartaRobo());
+		}
+
+		if (desc.getTerceiraCartaRobo() != null) {
+			Attribute terceiraCartaRobo = new Attribute("terceiraCartaRobo", TrucoDescription.class);
+			simConfig.addMapping(terceiraCartaRobo, new Equal()); // carta
+			simConfig.setWeight(terceiraCartaRobo, pesos.getPesoTerceiraCartaRobo());
+		}
+
+		/*if (desc.getPrimeiraCartaRoboClustering() != null) {
+			Attribute primeiraCartaRoboClustering = new Attribute("primeiraCartaRoboClustering", TrucoDescription.class);
+			simConfig.addMapping(primeiraCartaRoboClustering, new Equal()); // carta
+			simConfig.setWeight(primeiraCartaRoboClustering, pesos.getPesoPrimeiraCartaRobo());
+		}
+
+		if (desc.getSegundaCartaRoboClustering() != null) {
+			Attribute segundaCartaRoboClustering = new Attribute("segundaCartaRoboClustering", TrucoDescription.class);
+			simConfig.addMapping(segundaCartaRoboClustering, new Equal()); // carta
+			simConfig.setWeight(segundaCartaRoboClustering, pesos.getPesoSegundaCartaRobo());
+		}
+
+		if (desc.getTerceiraCartaRoboClustering() != null) {
+			Attribute terceiraCartaRoboClustering = new Attribute("terceiraCartaRoboClustering", TrucoDescription.class);
+			simConfig.addMapping(terceiraCartaRoboClustering, new Equal()); // carta
+			simConfig.setWeight(terceiraCartaRoboClustering, pesos.getPesoTerceiraCartaRobo());
+		}*/
+
+		if (desc.getPrimeiraCartaHumano() != null) {
+			Attribute primeiraCartaHumano = new Attribute("primeiraCartaHumano", TrucoDescription.class);
+			//simConfig.addMapping(primeiraCartaHumano, new Interval(52)); // carta
+			simConfig.addMapping(primeiraCartaHumano, new Equal()); // carta
+			simConfig.setWeight(primeiraCartaHumano, pesos.getPesoPrimeiraCartaHumano());
+		}
+
+		if (desc.getSegundaCartaHumano() != null) {
+			Attribute segundaCartaHumano = new Attribute("segundaCartaHumano", TrucoDescription.class);
+			//simConfig.addMapping(segundaCartaHumano, new Interval(52)); // carta
+			simConfig.addMapping(segundaCartaHumano, new Equal()); // carta
+			simConfig.setWeight(segundaCartaHumano, pesos.getPesoSegundaCartaHumano());
+		}
+
+		if (desc.getTerceiraCartaHumano() != null) {
+			Attribute terceiraCartaHumano = new Attribute("terceiraCartaHumano", TrucoDescription.class);
+			//simConfig.addMapping(terceiraCartaHumano, new Interval(52)); // carta
+			simConfig.addMapping(terceiraCartaHumano, new Equal()); // carta
+			simConfig.setWeight(terceiraCartaHumano, pesos.getPesoTerceiraCartaHumano());
+		}
+
+		if (desc.getGanhadorPrimeiraRodada() != null) {
+			Attribute ganhadorPrimeiraRodada = new Attribute("ganhadorPrimeiraRodada", TrucoDescription.class);
+			simConfig.addMapping(ganhadorPrimeiraRodada, new Equal());// Interval(2)); // jogador
+			simConfig.setWeight(ganhadorPrimeiraRodada, pesos.getPesoGanhadorPrimeiraRodada());
+		}
+
+		if (desc.getGanhadorSegundaRodada() != null) {
+			Attribute ganhadorSegundaRodada = new Attribute("ganhadorSegundaRodada", TrucoDescription.class);
+			simConfig.addMapping(ganhadorSegundaRodada, new Equal());// Interval(2)); // jogador
+			simConfig.setWeight(ganhadorSegundaRodada, pesos.getPesoGanhadorSegundaRodada());
+		}
+
+		if (desc.getQuemTruco() != null) {
+			Attribute quemTruco = new Attribute("quemTruco", TrucoDescription.class);
+			simConfig.addMapping(quemTruco, new Equal()); // jogador
+			simConfig.setWeight(quemTruco, pesos.getPesoQuemTruco());
+		}
+
+		if (desc.getQuemRetruco() != null) {
+			Attribute quemRetruco = new Attribute("quemRetruco", TrucoDescription.class);
+			simConfig.addMapping(quemRetruco, new Equal()); // jogador
+			simConfig.setWeight(quemRetruco, pesos.getPesoQuemRetruco());
+		}
+
+		if (desc.getQuemValeQuatro() != null) {
+			Attribute quemValeQuatro = new Attribute("quemValeQuatro", TrucoDescription.class);
+			simConfig.addMapping(quemValeQuatro, new Equal()); // jogador
+			simConfig.setWeight(quemValeQuatro, pesos.getPesoQuemValeQuatro());
+		}
+
+		if (desc.getQuandoTruco() != null) {
+			Attribute quandoTruco = new Attribute("quandoTruco", TrucoDescription.class);
+			simConfig.addMapping(quandoTruco, new Equal()); // jogador
+			simConfig.setWeight(quandoTruco, pesos.getPesoQuandoTruco());
+		}
+
+		if (desc.getQuandoRetruco() != null) {
+			Attribute quandoRetruco = new Attribute("quandoRetruco", TrucoDescription.class);
+			simConfig.addMapping(quandoRetruco, new Equal()); // jogador
+			simConfig.setWeight(quandoRetruco, pesos.getPesoQuandoRetruco());
+		}
+
+		if (desc.getQuemValeQuatro() != null) {
+			Attribute quandoValeQuatro = new Attribute("quandoValeQuatro", TrucoDescription.class);
+			simConfig.addMapping(quandoValeQuatro, new Equal()); // jogador
+			simConfig.setWeight(quandoValeQuatro, pesos.getPesoQuandoValeQuatro());
+		}
+
+		if (desc.getTentosAnterioresRobo() != null ) {
+
+			Attribute tentosAnterioresRobo = new Attribute("tentosAnterioresRobo", TrucoDescription.class);
+			simConfig.addMapping(tentosAnterioresRobo, new Equal()); // numero
+			simConfig.setWeight(tentosAnterioresRobo, pesos.getPesoTentosAnterioresRobo());
+		}
+		if (desc.getTentosAnterioresHumano() != null) {
+
+			Attribute tentosAnterioresHumano = new Attribute("tentosAnterioresHumano", TrucoDescription.class);
+			simConfig.addMapping(tentosAnterioresHumano, new Equal()); // numero
+			simConfig.setWeight(tentosAnterioresHumano, pesos.getPesoTentosAnterioresHumano());
+		}
+
+
+		Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(cases, query, simConfig);
+
+		eval = SelectCases.selectTopKRR(eval, cases.size());
+		return eval;
+	}
+
+    default Collection<RetrievalResult>  executeQueryActiveLearningEnvido(Collection<CBRCase> cases, CBRQuery query)
             throws ExecutionException {
 
-	    TrucoDescription desc = (TrucoDescription) query.getDescription();
+        TrucoDescription desc = (TrucoDescription) query.getDescription();
         NNConfig simConfig = new NNConfig();
         simConfig.setDescriptionSimFunction(new Average());
         PesosConsulta pesos = new PesosConsulta();
-        if (desc.getJogadorMao() != null && !desc.getJogadorMao().equals(0))
+
+        if (desc.getJogadorMao() != null && !desc.getJogadorMao().equals(0)) {
             simConfig.addMapping(new Attribute("jogadorMao", TrucoDescription.class), new Equal()); // jogador
+        }
 
-         if (desc.getPrimeiraCartaHumano() != null) {
-             Attribute primeiraCartaHumano = new Attribute("primeiraCartaHumano", TrucoDescription.class);
-            //simConfig.addMapping(primeiraCartaHumano, new Interval(52)); // carta
-            simConfig.addMapping(primeiraCartaHumano, new Equal()); // carta
+        if (desc.getPrimeiraCartaHumano() != null) {
+            Attribute primeiraCartaHumano = new Attribute("primeiraCartaHumano", TrucoDescription.class);
+            simConfig.addMapping(primeiraCartaHumano, new Interval(52)); // carta
+            //simConfig.addMapping(primeiraCartaHumano, new Equal()); // carta
             simConfig.setWeight(primeiraCartaHumano, pesos.getPesoPrimeiraCartaHumano());
-         }
+        }
 
-        if (desc.getQuemPediuEnvido() != null && !desc.getQuemPediuEnvido().equals(0)) {
+        /*if (desc.getQuemPediuEnvido() != null && !desc.getQuemPediuEnvido().equals(0)) {
             Attribute quemPediuEnvido = new Attribute("quemPediuEnvido", TrucoDescription.class);
             simConfig.addMapping(quemPediuEnvido, new Equal()); // jogador
             simConfig.setWeight(quemPediuEnvido, pesos.getPesoQuemPediuEnvido());
@@ -1548,33 +1594,205 @@ public interface CBR {
             simConfig.addMapping(quemPediuFaltaEnvido, new Equal()); // jogador
             simConfig.setWeight(quemPediuFaltaEnvido, pesos.getPesoQuemPediuFaltaEnvido());
         }
-
+*/
         if (desc.getPontosEnvidoRobo() != null && !desc.getPontosEnvidoRobo().equals(0)) {
             Attribute pontosEnvidoRobo = new Attribute("pontosEnvidoRobo", TrucoDescription.class);
             simConfig.addMapping(pontosEnvidoRobo, new Equal()); // numero
             simConfig.setWeight(pontosEnvidoRobo, pesos.getPesoPontosEnvidoRobo());
         }
 
-        if (desc.getTentosAnterioresRobo() != null && !desc.getTentosAnterioresRobo().equals(0)) {
+        if (desc.getTentosAnterioresRobo() != null ) {
             Attribute tentosAnterioresRobo = new Attribute("tentosAnterioresRobo", TrucoDescription.class);
-            simConfig.addMapping(tentosAnterioresRobo, new Equal()); // numero
+            //simConfig.addMapping(tentosAnterioresRobo, new Equal()); // numero
+            simConfig.addMapping(tentosAnterioresRobo, new Interval(24)); // numero
             simConfig.setWeight(tentosAnterioresRobo, pesos.getPesoTentosAnterioresRobo());
         }
 
-        if (desc.getTentosAnterioresHumano() != null && !desc.getTentosAnterioresHumano().equals(0)) {
+        if (desc.getTentosAnterioresHumano() != null ) {
             Attribute tentosAnterioresHumano = new Attribute("tentosAnterioresHumano", TrucoDescription.class);
-            simConfig.addMapping(tentosAnterioresHumano, new Equal()); // numero
+            //simConfig.addMapping(tentosAnterioresHumano, new Equal()); // numero
+            simConfig.addMapping(tentosAnterioresHumano, new Interval(24)); // numero
             simConfig.setWeight(tentosAnterioresHumano, pesos.getPesoTentosAnterioresHumano());
         }
 
+        if (desc.getBluff1Success() != null && !desc.getBluff1Success().equals(-1)) {
+
+            Attribute bluff1Success = new Attribute("bluff1Success", TrucoDescription.class);
+            simConfig.addMapping(bluff1Success, new Equal()); // numero
+            simConfig.setWeight(bluff1Success, pesos.getBluff1Success());
+        }
+
+        if (desc.getBluff2Success() != null && !desc.getBluff2Success().equals(-1)) {
+
+            Attribute bluff2Success = new Attribute("bluff2Success", TrucoDescription.class);
+            simConfig.addMapping(bluff2Success, new Equal()); // numero
+            simConfig.setWeight(bluff2Success, pesos.getBluff1Success());
+        }
+
+        if (desc.getBluff3Success() != null && !desc.getBluff3Success().equals(-1)) {
+
+            Attribute bluff3Success = new Attribute("bluff3Success", TrucoDescription.class);
+            simConfig.addMapping(bluff3Success, new Equal()); // numero
+            simConfig.setWeight(bluff3Success, pesos.getBluff1Success());
+        }
+
+        /*if (desc.getBluff4Success() != null && !desc.getBluff4Success().equals(-1)) {
+
+            Attribute bluff4Success = new Attribute("bluff4Success", TrucoDescription.class);
+            simConfig.addMapping(bluff4Success, new Equal()); // numero
+            simConfig.setWeight(bluff4Success, pesos.getBluff1Success());
+        }
+
+        if (desc.getBluff5Success() != null && !desc.getBluff5Success().equals(-1)) {
+
+            Attribute bluff5Success = new Attribute("bluff5Success", TrucoDescription.class);
+            simConfig.addMapping(bluff5Success, new Equal()); // numero
+            simConfig.setWeight(bluff5Success, pesos.getBluff1Success());
+        }
+
+        if (desc.getBluff6Success() != null && !desc.getBluff6Success().equals(-1)) {
+
+            Attribute bluff6Success = new Attribute("bluff6Success", TrucoDescription.class);
+            simConfig.addMapping(bluff6Success, new Equal()); // numero
+            simConfig.setWeight(bluff6Success, pesos.getBluff1Success());
+        }*/
+
+        if (desc.getBluff1Failure() != null && !desc.getBluff1Failure().equals(-1)) {
+
+            Attribute bluff1Failure = new Attribute("bluff1Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff1Failure, new Equal()); // numero
+            simConfig.setWeight(bluff1Failure, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff2Failure() != null && !desc.getBluff2Failure().equals(-1)) {
+
+            Attribute bluff2Failure = new Attribute("bluff2Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff2Failure, new Equal()); // numero
+            simConfig.setWeight(bluff2Failure, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff3Failure() != null && !desc.getBluff3Failure().equals(-1)) {
+
+            Attribute bluff3Failure = new Attribute("bluff3Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff3Failure, new Equal()); // numero
+            simConfig.setWeight(bluff3Failure, pesos.getBluff1Failure());
+        }
+
+        /*if (desc.getBluff4Failure() != null && !desc.getBluff4Failure().equals(-1)) {
+
+            Attribute bluff4Failure = new Attribute("bluff4Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff4Failure, new Equal()); // numero
+            simConfig.setWeight(bluff4Failure, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff5Failure() != null && !desc.getBluff5Failure().equals(-1)) {
+
+            Attribute bluff5Failure = new Attribute("bluff5Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff5Failure, new Equal()); // numero
+            simConfig.setWeight(bluff5Failure, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff6Failure() != null && !desc.getBluff6Failure().equals(-1)) {
+
+            Attribute bluff6Failure = new Attribute("bluff6Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff6Failure, new Equal()); // numero
+            simConfig.setWeight(bluff6Failure, pesos.getBluff1Failure());
+        }*/
+
+        if (desc.getBluff1Opponent() != null && !desc.getBluff1Opponent().equals(-1)) {
+
+            Attribute bluff1Opponent = new Attribute("bluff1Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff1Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff1Opponent, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff2Opponent() != null && !desc.getBluff2Opponent().equals(-1)) {
+
+            Attribute bluff2Opponent = new Attribute("bluff2Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff2Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff2Opponent, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff3Opponent() != null && !desc.getBluff3Opponent().equals(-1)) {
+
+            Attribute bluff3Opponent = new Attribute("bluff3Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff3Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff3Opponent, pesos.getBluff1Failure());
+        }
+
+        /*if (desc.getBluff4Opponent() != null && !desc.getBluff4Opponent().equals(-1)) {
+
+            Attribute bluff4Opponent = new Attribute("bluff4Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff4Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff4Opponent, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff5Opponent() != null && !desc.getBluff5Opponent().equals(-1)) {
+
+            Attribute bluff5Opponent = new Attribute("bluff5Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff5Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff5Opponent, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff6Opponent() != null && !desc.getBluff6Opponent().equals(-1)) {
+
+            Attribute bluff6Opponent = new Attribute("bluff6Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff6Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff6Opponent, pesos.getBluff1Failure());
+        }*/
+
+        if (desc.getBluff1ShowDown() != null && !desc.getBluff1ShowDown().equals(-1)) {
+
+            Attribute bluff1ShowDown = new Attribute("bluff1ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff1ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff1ShowDown, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff2ShowDown() != null && !desc.getBluff2ShowDown().equals(-1)) {
+
+            Attribute bluff2ShowDown = new Attribute("bluff2ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff2ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff2ShowDown, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff3ShowDown() != null && !desc.getBluff3ShowDown().equals(-1)) {
+
+            Attribute bluff3ShowDown = new Attribute("bluff3ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff3ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff3ShowDown, pesos.getBluff1Failure());
+        }
+
+        /*if (desc.getBluff4ShowDown() != null && !desc.getBluff4ShowDown().equals(-1)) {
+
+            Attribute bluff4ShowDown = new Attribute("bluff4ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff4ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff4ShowDown, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff5ShowDown() != null && !desc.getBluff5ShowDown().equals(-1)) {
+
+            Attribute bluff5ShowDown = new Attribute("bluff5ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff5ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff5ShowDown, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff6ShowDown() != null && !desc.getBluff6ShowDown().equals(-1)) {
+
+            Attribute bluff6ShowDown = new Attribute("bluff6ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff6ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff6ShowDown, pesos.getBluff1Failure());
+        }*/
+
 
         Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(cases, query, simConfig);
+
         eval = SelectCases.selectTopKRR(eval, cases.size());
 
         return eval;
+
     }
 
-    default Collection<RetrievalResult> executeQueryJogadaClusterEx(Collection<CBRCase> cases, CBRQuery query)
+    default Collection<RetrievalResult>  executeQueryActiveLearningTruco(Collection<CBRCase> cases, CBRQuery query)
             throws ExecutionException {
 
         TrucoDescription desc = (TrucoDescription) query.getDescription();
@@ -1590,86 +1808,86 @@ public interface CBR {
 
         if (desc.getCartaAltaRobo() != null) {
             Attribute cartaAltaRobo = new Attribute("cartaAltaRobo", TrucoDescription.class);
-            //simConfig.addMapping(cartaAltaRobo, new Interval(52)); // carta
-            simConfig.addMapping(cartaAltaRobo, new Equal()); // carta
+            //simConfig.addMapping(cartaAltaRobo, new Equal()); // carta
+            simConfig.addMapping(cartaAltaRobo, new Interval(52)); // carta
             simConfig.setWeight(cartaAltaRobo, pesos.getPesoCartaAltaRobo());
         }
 
         if (desc.getCartaMediaRobo() != null) {
             Attribute cartaMediaRobo = new Attribute("cartaMediaRobo", TrucoDescription.class);
-            //simConfig.addMapping(cartaMediaRobo, new Interval(52)); // carta
-            simConfig.addMapping(cartaMediaRobo, new Equal()); // carta
+            //simConfig.addMapping(cartaMediaRobo, new Equal()); // carta
+            simConfig.addMapping(cartaMediaRobo, new Interval(52)); // carta
             simConfig.setWeight(cartaMediaRobo, pesos.getPesoCartaMediaRobo());
         }
 
         if (desc.getCartaBaixaRobo() != null) {
             Attribute cartaBaixaRobo = new Attribute("cartaBaixaRobo", TrucoDescription.class);
-            //simConfig.addMapping(cartaBaixaRobo, new Interval(52)); // carta
-            simConfig.addMapping(cartaBaixaRobo, new Equal()); // carta
+            //simConfig.addMapping(cartaBaixaRobo, new Equal()); // carta
+            simConfig.addMapping(cartaBaixaRobo, new Interval(52)); // carta
             simConfig.setWeight(cartaBaixaRobo, pesos.getPesoCartaBaixaRobo());
         }
 
         if (desc.getPrimeiraCartaRobo() != null) {
             Attribute primeiraCartaRobo = new Attribute("primeiraCartaRobo", TrucoDescription.class);
-            //simConfig.addMapping(primeiraCartaRobo, new Interval(52)); // carta
-            simConfig.addMapping(primeiraCartaRobo, new Equal()); // carta
+            //simConfig.addMapping(primeiraCartaRobo, new Equal()); // carta
+            simConfig.addMapping(primeiraCartaRobo, new Interval(52)); // carta
             simConfig.setWeight(primeiraCartaRobo, pesos.getPesoPrimeiraCartaRobo());
         }
 
         if (desc.getSegundaCartaRobo() != null) {
             Attribute segundaCartaRobo = new Attribute("segundaCartaRobo", TrucoDescription.class);
-            //simConfig.addMapping(segundaCartaRobo, new Interval(52)); // carta
-            simConfig.addMapping(segundaCartaRobo, new Equal()); // carta
+            //simConfig.addMapping(segundaCartaRobo, new Equal()); // carta
+            simConfig.addMapping(segundaCartaRobo, new Interval(52)); // carta
             simConfig.setWeight(segundaCartaRobo, pesos.getPesoSegundaCartaRobo());
         }
 
         if (desc.getTerceiraCartaRobo() != null) {
             Attribute terceiraCartaRobo = new Attribute("terceiraCartaRobo", TrucoDescription.class);
+            //simConfig.addMapping(terceiraCartaRobo, new Equal()); // carta
             simConfig.addMapping(terceiraCartaRobo, new Interval(52)); // carta
-            simConfig.addMapping(terceiraCartaRobo, new Equal()); // carta
             simConfig.setWeight(terceiraCartaRobo, pesos.getPesoTerceiraCartaRobo());
         }
 
-        if (desc.getPrimeiraCartaRoboClustering() != null) {
-            Attribute primeiraCartaRoboClustering = new Attribute("primeiraCartaRoboClustering", TrucoDescription.class);
-            simConfig.addMapping(primeiraCartaRoboClustering, new Equal()); // carta
-            simConfig.setWeight(primeiraCartaRoboClustering, pesos.getPesoPrimeiraCartaRobo());
-        }
+		/*if (desc.getPrimeiraCartaRoboClustering() != null) {
+			Attribute primeiraCartaRoboClustering = new Attribute("primeiraCartaRoboClustering", TrucoDescription.class);
+			simConfig.addMapping(primeiraCartaRoboClustering, new Equal()); // carta
+			simConfig.setWeight(primeiraCartaRoboClustering, pesos.getPesoPrimeiraCartaRobo());
+		}
 
-        if (desc.getSegundaCartaRoboClustering() != null) {
-            Attribute segundaCartaRoboClustering = new Attribute("segundaCartaRoboClustering", TrucoDescription.class);
-            simConfig.addMapping(segundaCartaRoboClustering, new Equal()); // carta
-            simConfig.setWeight(segundaCartaRoboClustering, pesos.getPesoSegundaCartaRobo());
-        }
+		if (desc.getSegundaCartaRoboClustering() != null) {
+			Attribute segundaCartaRoboClustering = new Attribute("segundaCartaRoboClustering", TrucoDescription.class);
+			simConfig.addMapping(segundaCartaRoboClustering, new Equal()); // carta
+			simConfig.setWeight(segundaCartaRoboClustering, pesos.getPesoSegundaCartaRobo());
+		}
 
-        if (desc.getTerceiraCartaRoboClustering() != null) {
-            Attribute terceiraCartaRoboClustering = new Attribute("terceiraCartaRoboClustering", TrucoDescription.class);
-            simConfig.addMapping(terceiraCartaRoboClustering, new Equal()); // carta
-            simConfig.setWeight(terceiraCartaRoboClustering, pesos.getPesoTerceiraCartaRobo());
-        }
+		if (desc.getTerceiraCartaRoboClustering() != null) {
+			Attribute terceiraCartaRoboClustering = new Attribute("terceiraCartaRoboClustering", TrucoDescription.class);
+			simConfig.addMapping(terceiraCartaRoboClustering, new Equal()); // carta
+			simConfig.setWeight(terceiraCartaRoboClustering, pesos.getPesoTerceiraCartaRobo());
+		}*/
 
         if (desc.getPrimeiraCartaHumano() != null) {
             Attribute primeiraCartaHumano = new Attribute("primeiraCartaHumano", TrucoDescription.class);
-            //simConfig.addMapping(primeiraCartaHumano, new Interval(52)); // carta
-            simConfig.addMapping(primeiraCartaHumano, new Equal()); // carta
+            simConfig.addMapping(primeiraCartaHumano, new Interval(52)); // carta
+            //simConfig.addMapping(primeiraCartaHumano, new Equal()); // carta
             simConfig.setWeight(primeiraCartaHumano, pesos.getPesoPrimeiraCartaHumano());
         }
 
         if (desc.getSegundaCartaHumano() != null) {
             Attribute segundaCartaHumano = new Attribute("segundaCartaHumano", TrucoDescription.class);
-            //simConfig.addMapping(segundaCartaHumano, new Interval(52)); // carta
-            simConfig.addMapping(segundaCartaHumano, new Equal()); // carta
+            simConfig.addMapping(segundaCartaHumano, new Interval(52)); // carta
+            //simConfig.addMapping(segundaCartaHumano, new Equal()); // carta
             simConfig.setWeight(segundaCartaHumano, pesos.getPesoSegundaCartaHumano());
         }
 
         if (desc.getTerceiraCartaHumano() != null) {
             Attribute terceiraCartaHumano = new Attribute("terceiraCartaHumano", TrucoDescription.class);
             simConfig.addMapping(terceiraCartaHumano, new Interval(52)); // carta
-            simConfig.addMapping(terceiraCartaHumano, new Equal()); // carta
+            //simConfig.addMapping(terceiraCartaHumano, new Equal()); // carta
             simConfig.setWeight(terceiraCartaHumano, pesos.getPesoTerceiraCartaHumano());
         }
 
-        if (desc.getGanhadorPrimeiraRodada() != null) {
+        /*if (desc.getGanhadorPrimeiraRodada() != null) {
             Attribute ganhadorPrimeiraRodada = new Attribute("ganhadorPrimeiraRodada", TrucoDescription.class);
             simConfig.addMapping(ganhadorPrimeiraRodada, new Equal());// Interval(2)); // jogador
             simConfig.setWeight(ganhadorPrimeiraRodada, pesos.getPesoGanhadorPrimeiraRodada());
@@ -1679,9 +1897,9 @@ public interface CBR {
             Attribute ganhadorSegundaRodada = new Attribute("ganhadorSegundaRodada", TrucoDescription.class);
             simConfig.addMapping(ganhadorSegundaRodada, new Equal());// Interval(2)); // jogador
             simConfig.setWeight(ganhadorSegundaRodada, pesos.getPesoGanhadorSegundaRodada());
-        }
+        }*/
 
-        if (desc.getQuemTruco() != null) {
+        /*if (desc.getQuemTruco() != null) {
             Attribute quemTruco = new Attribute("quemTruco", TrucoDescription.class);
             simConfig.addMapping(quemTruco, new Equal()); // jogador
             simConfig.setWeight(quemTruco, pesos.getPesoQuemTruco());
@@ -1715,31 +1933,201 @@ public interface CBR {
             Attribute quandoValeQuatro = new Attribute("quandoValeQuatro", TrucoDescription.class);
             simConfig.addMapping(quandoValeQuatro, new Equal()); // jogador
             simConfig.setWeight(quandoValeQuatro, pesos.getPesoQuandoValeQuatro());
-        }
+        }*/
 
-        if (desc.getTentosAnterioresRobo() != null && !desc.getTentosAnterioresRobo().equals(0)) {
+        if (desc.getTentosAnterioresRobo() != null ) {
 
             Attribute tentosAnterioresRobo = new Attribute("tentosAnterioresRobo", TrucoDescription.class);
-            //simConfig.addMapping(tentosAnterioresRobo, new Interval(24)); // numero
-            simConfig.addMapping(tentosAnterioresRobo, new Equal()); // numero
+            simConfig.addMapping(tentosAnterioresRobo, new Interval(24)); // numero
+            //simConfig.addMapping(tentosAnterioresRobo, new Equal()); // numero
             simConfig.setWeight(tentosAnterioresRobo, pesos.getPesoTentosAnterioresRobo());
         }
-        if (desc.getTentosAnterioresHumano() != null && !desc.getTentosAnterioresHumano().equals(0)) {
+        if (desc.getTentosAnterioresHumano() != null) {
 
             Attribute tentosAnterioresHumano = new Attribute("tentosAnterioresHumano", TrucoDescription.class);
-            //simConfig.addMapping(tentosAnterioresHumano, new Interval(24)); // numero
             simConfig.addMapping(tentosAnterioresHumano, new Equal()); // numero
+            simConfig.addMapping(tentosAnterioresHumano, new Interval(24)); // numero
             simConfig.setWeight(tentosAnterioresHumano, pesos.getPesoTentosAnterioresHumano());
+        }
+
+        /*if (desc.getBluff1Success() != null && !desc.getBluff1Success().equals(-1)) {
+
+            Attribute bluff1Success = new Attribute("bluff1Success", TrucoDescription.class);
+            simConfig.addMapping(bluff1Success, new Equal()); // numero
+            simConfig.setWeight(bluff1Success, pesos.getBluff1Success());
+        }
+
+        if (desc.getBluff2Success() != null && !desc.getBluff2Success().equals(-1)) {
+
+            Attribute bluff2Success = new Attribute("bluff2Success", TrucoDescription.class);
+            simConfig.addMapping(bluff2Success, new Equal()); // numero
+            simConfig.setWeight(bluff2Success, pesos.getBluff1Success());
+        }
+
+        if (desc.getBluff3Success() != null && !desc.getBluff3Success().equals(-1)) {
+
+            Attribute bluff3Success = new Attribute("bluff3Success", TrucoDescription.class);
+            simConfig.addMapping(bluff3Success, new Equal()); // numero
+            simConfig.setWeight(bluff3Success, pesos.getBluff1Success());
+        }*/
+
+        if (desc.getBluff4Success() != null && !desc.getBluff4Success().equals(-1)) {
+
+            Attribute bluff4Success = new Attribute("bluff4Success", TrucoDescription.class);
+            simConfig.addMapping(bluff4Success, new Equal()); // numero
+            simConfig.setWeight(bluff4Success, pesos.getBluff1Success());
+        }
+
+        if (desc.getBluff5Success() != null && !desc.getBluff5Success().equals(-1)) {
+
+            Attribute bluff5Success = new Attribute("bluff5Success", TrucoDescription.class);
+            simConfig.addMapping(bluff5Success, new Equal()); // numero
+            simConfig.setWeight(bluff5Success, pesos.getBluff1Success());
+        }
+
+        if (desc.getBluff6Success() != null && !desc.getBluff6Success().equals(-1)) {
+
+            Attribute bluff6Success = new Attribute("bluff6Success", TrucoDescription.class);
+            simConfig.addMapping(bluff6Success, new Equal()); // numero
+            simConfig.setWeight(bluff6Success, pesos.getBluff1Success());
+        }
+
+        /*if (desc.getBluff1Failure() != null && !desc.getBluff1Failure().equals(-1)) {
+
+            Attribute bluff1Failure = new Attribute("bluff1Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff1Failure, new Equal()); // numero
+            simConfig.setWeight(bluff1Failure, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff2Failure() != null && !desc.getBluff2Failure().equals(-1)) {
+
+            Attribute bluff2Failure = new Attribute("bluff2Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff2Failure, new Equal()); // numero
+            simConfig.setWeight(bluff2Failure, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff3Failure() != null && !desc.getBluff3Failure().equals(-1)) {
+
+            Attribute bluff3Failure = new Attribute("bluff3Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff3Failure, new Equal()); // numero
+            simConfig.setWeight(bluff3Failure, pesos.getBluff1Failure());
+        }*/
+
+        if (desc.getBluff4Failure() != null && !desc.getBluff4Failure().equals(-1)) {
+
+            Attribute bluff4Failure = new Attribute("bluff4Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff4Failure, new Equal()); // numero
+            simConfig.setWeight(bluff4Failure, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff5Failure() != null && !desc.getBluff5Failure().equals(-1)) {
+
+            Attribute bluff5Failure = new Attribute("bluff5Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff5Failure, new Equal()); // numero
+            simConfig.setWeight(bluff5Failure, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff6Failure() != null && !desc.getBluff6Failure().equals(-1)) {
+
+            Attribute bluff6Failure = new Attribute("bluff6Failure", TrucoDescription.class);
+            simConfig.addMapping(bluff6Failure, new Equal()); // numero
+            simConfig.setWeight(bluff6Failure, pesos.getBluff1Failure());
+        }
+
+        /*if (desc.getBluff1Opponent() != null && !desc.getBluff1Opponent().equals(-1)) {
+
+            Attribute bluff1Opponent = new Attribute("bluff1Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff1Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff1Opponent, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff2Opponent() != null && !desc.getBluff2Opponent().equals(-1)) {
+
+            Attribute bluff2Opponent = new Attribute("bluff2Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff2Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff2Opponent, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff3Opponent() != null && !desc.getBluff3Opponent().equals(-1)) {
+
+            Attribute bluff3Opponent = new Attribute("bluff3Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff3Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff3Opponent, pesos.getBluff1Failure());
+        }*/
+
+        if (desc.getBluff4Opponent() != null && !desc.getBluff4Opponent().equals(-1)) {
+
+            Attribute bluff4Opponent = new Attribute("bluff4Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff4Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff4Opponent, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff5Opponent() != null && !desc.getBluff5Opponent().equals(-1)) {
+
+            Attribute bluff5Opponent = new Attribute("bluff5Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff5Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff5Opponent, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff6Opponent() != null && !desc.getBluff6Opponent().equals(-1)) {
+
+            Attribute bluff6Opponent = new Attribute("bluff6Opponent", TrucoDescription.class);
+            simConfig.addMapping(bluff6Opponent, new Equal()); // numero
+            simConfig.setWeight(bluff6Opponent, pesos.getBluff1Failure());
+        }
+
+        /*if (desc.getBluff1ShowDown() != null && !desc.getBluff1ShowDown().equals(-1)) {
+
+            Attribute bluff1ShowDown = new Attribute("bluff1ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff1ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff1ShowDown, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff2ShowDown() != null && !desc.getBluff2ShowDown().equals(-1)) {
+
+            Attribute bluff2ShowDown = new Attribute("bluff2ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff2ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff2ShowDown, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff3ShowDown() != null && !desc.getBluff3ShowDown().equals(-1)) {
+
+            Attribute bluff3ShowDown = new Attribute("bluff3ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff3ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff3ShowDown, pesos.getBluff1Failure());
+        }*/
+
+        if (desc.getBluff4ShowDown() != null && !desc.getBluff4ShowDown().equals(-1)) {
+
+            Attribute bluff4ShowDown = new Attribute("bluff4ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff4ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff4ShowDown, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff5ShowDown() != null && !desc.getBluff5ShowDown().equals(-1)) {
+
+            Attribute bluff5ShowDown = new Attribute("bluff5ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff5ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff5ShowDown, pesos.getBluff1Failure());
+        }
+
+        if (desc.getBluff6ShowDown() != null && !desc.getBluff6ShowDown().equals(-1)) {
+
+            Attribute bluff6ShowDown = new Attribute("bluff6ShowDown", TrucoDescription.class);
+            simConfig.addMapping(bluff6ShowDown, new Equal()); // numero
+            simConfig.setWeight(bluff6ShowDown, pesos.getBluff1Failure());
         }
 
 
         Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(cases, query, simConfig);
 
         eval = SelectCases.selectTopKRR(eval, cases.size());
+
         return eval;
+
     }
 
-    ////====================================Fim Métodos Vargas
+	////====================================Fim Métodos Vargas
 
 	default Collection<RetrievalResult> executeQueryContraFlor(Collection<CBRCase> cases, CBRQuery query)
 			throws ExecutionException {
@@ -1777,7 +2165,6 @@ public interface CBR {
 			query.setDescription(queryDesc);
 			// verifica qual query executar
 
-
 			switch (tipoConsulta) {
 				// se não encontrar casos similares para flor pode estar aqui o problema
 				case contraflor:
@@ -1789,24 +2176,27 @@ public interface CBR {
 				case pontoCluster:
 					results = executeQueryPontoCluster(cases, query);
 					break;
-                case pontoClusterEx:
-                    results = executeQueryPontoClusterEx(cases, query);
-                    break;
+				case pontoClusterEx:
+					results = executeQueryPontoClusterEx(cases, query);
+					break;
 				case pontoClusterAL:
 					results = executeQueryPontoClusterActiveLearning(cases, query);
 					break;
 				case trucoClusterAL:
 					results = executeQueryJogadaClusterActiveLearning(cases, query);
 					break;
-				case active:
-					results = executeQueryActiveLearning(cases, query);
+				case activeEnvido:
+					results = executeQueryActiveLearningEnvido(cases, query);
 					break;
+                case activeTruco:
+                    results = executeQueryActiveLearningTruco(cases, query);
+                    break;
 				case trucoCluster:
 					results = executeQueryJogadaCluster(cases, query);
 					break;
-                case trucoCartaCluster:
-                    results = executeQueryJogadaClusterEx(cases, query);
-                    break;
+				case trucoCartaCluster:
+					results = executeQueryJogadaClusterEx(cases, query);
+					break;
 				case recuperaGruposJogadas:
 					results = executeQueryCasosQuePertencerAclusterJogadaCarta(cases, query);
 					break;
@@ -2110,7 +2500,7 @@ public interface CBR {
 				validados.add(actualResult);
 			}
 		}
-		 return validados;
+		return validados;
 	}
 
 	default Collection<CBRCase> FiltraAprendidosPeloAtivo(Collection<RetrievalResult> results) {
@@ -2146,14 +2536,18 @@ public interface CBR {
 	}
 
 	default Collection<RetrievalResult> filtraResultsBlefe(Collection<RetrievalResult> results,
-															Double thresholdCluster) {
+														   Double thresholdCluster) {
 
 		Collection<RetrievalResult> validados = new ArrayList<RetrievalResult>();
 		Iterator iteratorCasosParaFiltrar = results.iterator();
+		int i = 0;
 		while (iteratorCasosParaFiltrar.hasNext()) {
+			i++;
 			RetrievalResult actualResult = (RetrievalResult) iteratorCasosParaFiltrar.next();
-
 			TrucoDescription casoAtual = (TrucoDescription) actualResult.get_case().getDescription();
+			if (i == 1) {
+				System.out.println("Similaridade Caso Mais Similar BLEFE: " + actualResult.getEval());
+			}
 			if (actualResult.getEval() >= thresholdCluster)
 				validados.add(actualResult);
 		}

@@ -99,11 +99,8 @@ public class AtualizarConsultas {
 		if(QuandoValeQuatro != null && !QuandoValeQuatro.equals(0))
 			cbr.setQuandoValeQuatro(QuandoValeQuatro);
 
-		if(tentosRobo != 0)
 			cbr.setTentosAnterioresRobo(tentosRobo);
-		if(tentosOponente != 0)
 			cbr.setTentosAnterioresHumano(tentosOponente);
-
 
 		return cbr;
 	}

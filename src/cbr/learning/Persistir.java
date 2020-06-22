@@ -17,16 +17,16 @@ public interface Persistir {
 
 	public void persistir(TrucoDescription newCase, CbrModular cbr, boolean compulsoryRetention);
 	
- default void aprendeCasos(int ultimoId, TrucoDescription newCase, CbrModular cbr) {
+    default void aprendeCasos(int ultimoId, TrucoDescription newCase, CbrModular cbr) {
 
 		int lastId = ultimoId + 1;
-	CBRCase aprenderCaso;
-	CaseBasesModelo caseBases = cbr.preencheCaseBase();
+		CBRCase aprenderCaso;
+		CaseBasesModelo caseBases = cbr.preencheCaseBase();
 		aprenderCaso = preparaAprendizado(newCase, lastId, caseBases);
 		
 		cbr.learnCasesMaos(aprenderCaso);
 		CbrModular.casosEnviadosPersistencia ++;
-		//System.out.println("casos enviados para persistencia "+ cbr.casosEnviadosPersistencia);
+		System.out.println("casos enviados para persistencia "+ cbr.casosEnviadosPersistencia);
 		/*
 		try {
 			Thread.currentThread().sleep(5000);

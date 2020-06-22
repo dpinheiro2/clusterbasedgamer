@@ -59,7 +59,7 @@ public class ExecuteScripts {
 			  
 			   
 		    
-			//System.out.println("done");
+			System.out.println("done K");
 			
 			
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
